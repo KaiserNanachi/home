@@ -4,7 +4,7 @@ title: 夜間光データ及びSDID法を用いた実証分析
 
 ## 衛星夜間光データとは
 
-
+![](images/earth_lights_lrg_Fotor.jpg){width="643"}
 
 ## Synthetic Diff-in-Diff法とは
 
@@ -13,8 +13,6 @@ $$
 $$
 
 ### 北海道拓殖銀行破綻と道内経済への効果検証
-
-
 
 ### 中国青海-西蔵鉄道開通による経済効果分析
 
