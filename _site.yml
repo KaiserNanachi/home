@@ -1,0 +1,11 @@
+name: "bibou"
+
+navbar: 
+  title: "備忘"
+  left:
+    - text: "ホーム"
+      href: index.html
+    - text: "夜間光分析"
+      href: shumi.html
+
+output_dir: "docs"
