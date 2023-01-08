@@ -39,12 +39,16 @@ ntl1992 <- ntl1992 %>%
   terra::crop(y=ext(c(123.1,146.9,24.0,45.7)))
 ntl2018 <- ntl2018 %>%
   terra::crop(y=ext(c(123.1,146.9,24.0,45.7)))
+```
+1992年
+```{r}
 terra::plot(ntl1992)
-terra::plot(ntl2018)
 ```
 
-
-
+2018年
+```{r}
+terra::plot(ntl2018)
+```
 
 ## Synthetic DiD法とは
 
@@ -53,6 +57,13 @@ $$
 \sum 
 $$
 
-### 北海道拓殖銀行破綻と道内経済への効果検証
+## 北海道拓殖銀行破綻と道内経済への効果検証
 
-### 中国青海-西蔵鉄道開通による経済効果分析
+```{r}
+jpn1<-sf::read_sf(dsn="data/JPN_shp/gadm41_JPN_2.shp")
+mapview::mapview(x=jpn1,
+                 zcol="NAME_2",
+                 color="transparent")
+```
+
+## 中国青海-西蔵鉄道開通による経済効果分析
