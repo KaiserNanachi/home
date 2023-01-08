@@ -7,5 +7,6 @@ navbar:
       href: index.html
     - text: "夜間光分析"
       href: shumi.html
+      
 
 output_dir: "docs"
