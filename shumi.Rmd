@@ -18,7 +18,7 @@ $$
 
 ### 中国青海-西蔵鉄道開通による経済効果分析
 
-``{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
+```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
 
 library(tidyverse)
 library(sf)
