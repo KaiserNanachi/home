@@ -3,6 +3,11 @@ title: 夜間光データ及びSDID法を用いた実証分析
 output:
   html_document:
     code_folding: hide
+    toc: TRUE
+    toc_depth: 3
+    toc_float: TRUE
+    number_sections: FALSE
+    highlight: "pygments"
 ---
 
 ```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
