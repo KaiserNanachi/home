@@ -9,5 +9,6 @@ navbar:
       href: shumi.html
     - text: "トピックモデル実装"
       href: topicmodel.html     
-
+    - text: "受験生期待値in杉田"
+      href: childexp.html
 output_dir: "docs"
