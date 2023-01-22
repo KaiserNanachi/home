@@ -8,8 +8,7 @@ navbar:
     - text: "夜間光分析"
       href: shumi.html
     - text: "トピックモデル実装"
-      href: topicmodel.html     
+      href: topicmodel.html
     - text: "受験生期待値in杉田"
-      href: childexp.html  
-      
+      href: childexp.html
 output_dir: "docs"
