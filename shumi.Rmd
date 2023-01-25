@@ -1,5 +1,5 @@
 ---
-title: 夜間光データ及びSDID法を用いた実証分析
+title: 夜間光データ(NTL)及びSDID法を用いた実証分析
 output:
   html_document:
     code_folding: hide
@@ -21,9 +21,11 @@ library(osrm)
 library(movecost)
 library(fs)
 library(stringr)
+library(DT)
 library(synthdid)
 mapview::mapviewOptions(fgb=FALSE)
 load("data/china.RData")
+load("data/sakhalin2.RData")
 ```
 
 ## 衛星夜間光データとは
@@ -99,17 +101,117 @@ $$
 
 ### うれしさ
 
-## 北海道拓殖銀行破綻と道内経済への効果検証
+・簡単に扱える
+
+・説明・解釈がしやすい
+
+・少ない処置群＆大量の対照群
+
+## ロシア「クリル(北方領土)開発計画」効果検証
+
+### 「クリル諸島(北方領土)社会経済発展プログラム (2007-2015)」とは...
+
+> ーそれだけ、ロシア政府は東部前線基地の開発計画に投資しているのだ。
+>
+> このプログラムには180億ルーブルの資金が投入され、前任者とは異なり、全額が融資されます。 新しいインフラの構築と既存のインフラの近代化に重点が置かれます。\
+> 交通機関- 岸壁、空港、道路\
+> エネルギー - 送電網と新しい発電能力\
+> 社会的なもの - 病院や幼稚園の建設、新しい住宅の建設など...
+
+-連邦政府目標プログラム「クリル諸島の社会的・経済的開発」より
 
 ```{r}
-jpn1<-sf::read_sf(dsn="data/JPN_shp/gadm41_JPN_2.shp") 
-
-mapview::mapview(x=jpn1) 
+mapview(RUS %>% filter(ID_1==60))
 ```
+
+クリル諸島(北方領土)は1996年にロシアによる開発計画が策定されましたが、国内経済等の混乱もあり立ち消えになっていましたが、2007年から本格的な資本投下が行われ、主に民生部門での発展が計画されました。 しかし当該地域は特殊な状況に置かれており、どの程度発展したのか分析できるようなデータにアクセスすることは出来ません。
+
+しかし夜の光を隠すことは出来ないでしょう。
+
+### Descriptive statistics
+
+データ前処理（省略）
+
+```{r,eval=F,echo=T}
+ntl<-function(x){
+  i<-terra::extract(
+    x=x,
+    y,
+    fun="sum",
+    na.rm=T
+  )
+  i<-select(i,!ID)
+  return(i)
+}
+
+RUS<-sf::read_sf(dsn="data/RUS_adm/RUS_adm3.shp")
+
+y<-terra::vect(sf::read_sf(dsn="data/RUS_adm/RUS_adm3.shp"))
+
+#mapview(RUS %>% filter(NAME_1 %in% c("Kamchatka", "Khabarovsk" ,"Sakhalin")))
+
+russia <- lapply(filecon, ntl)#ほんとに時間かかります
+
+rus1<-bind_cols(russia)
+
+rus1<-rus1 |> 
+  as.tibble() |> 
+  rename_with(\(x) str_replace(x, "Harmonized_DN_NTL_", " "))
+
+rusdata<-bind_cols(RUS,rus1)
+
+rusdata<-rusdata |> 
+  as.data.frame() |> 
+  select(!c("ID_0","ISO","NAME_0","TYPE_3","ENGTYPE_3","VARNAME_3","geometry","NAME_3","NL_NAME_3"))
+
+rusdf<-rusdata |> 
+  pivot_longer(cols = c(` 1992_calDMSP`: ` 2018_simVIIRS`),
+               names_to = "year",
+               values_to = "ntl") |> 
+  mutate(lntl=log(ntl+1))
+
+rusarea<-expanse(y, unit="m", transform=TRUE)/1000000
+
+rusarea<-rusarea |> 
+  as.tibble() |> 
+  mutate(ID=1:length(rusarea))
+
+rusdf2<-left_join(rusdf,rusarea,by=c("ID_3"="ID"),copy=T)
+
+rusdf2<-rusdf2 %>% 
+  mutate(perarea=ntl/value,
+         lperarea=log(perarea+1))
+
+rusdf2$year<-as.double(str_sub(rusdf2$year,2,5))
+
+east<-rusdf2 %>% 
+  filter(ID_1 %in% c(3,9,83,82,24,56,28,60,40,61,	12))
+```
+
+サハリン州（北方領土も含む）の夜間光(対数)/面積データ
+
+使用したデータは後述します
+
+```{r}
+DT::datatable(sakhalin %>% select(NAME_1,NAME_2,year,lperarea))
+
+east<-rusdf2 %>% 
+  filter(ID_1 %in% c(3,9,83,82,24,56,28,60,40,61,	12))
+```
+
+クリル諸島(北方領土)の夜間光の伸び(対数）
+
+```{r}
+kril %>% 
+  ggplot() + 
+  geom_line(aes(x = year, y = lperarea))
+```
+
+### NTL analysis
 
 ## 中国青海-西蔵鉄道開通による経済効果分析
 
-参考文献
+データ・参考文献
 
 1.  Synthetic Difference In Differences(Arkhangelsky et. al., 2019)を読んだ<https://dropout009.hatenablog.com/entry/2019/05/06/185620>
 

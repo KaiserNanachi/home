@@ -10,6 +10,22 @@ output:
     highlight: "pygments"
 ---
 
+```{r}
+load("data/RData/all.RData")
+load("data/RData/hama.RData")
+```
+
+```{r}
+
+mapview::mapview(x=map5,
+                 zcol="exp2",
+                 color="transparent")
+
+mapview::mapview(x=hamamesh3,
+                   zcol="total",
+                   color="transparent")
+```
+
 ### モチベーション
 
 -   今月初めに総務省統計局から基礎地区データの開示

@@ -1,5 +1,5 @@
 ---
-title: "NaN"
+title: "info"
 ---
 
 ### 興味
@@ -21,8 +21,6 @@ title: "NaN"
 [**理論と実装のバランスを取る**]{.underline}
 
 [**楽しく**]{.underline}
-
-
 
 <details>
 
