@@ -71,17 +71,17 @@ terra::plot(ntl2018)
 
 DID推定量は以下の通りです （書き方は様々あるが）$$
 (\hat{\tau}^{DID}, \hat{\mu}, \hat{\alpha}, \hat{\beta})={\arg\min}_{\mu,\alpha,\beta,\tau} \sum_{i=1}^N \sum_{t=1}^T(Y_{it}-\mu-\alpha_i-\beta_t-D_{it}\tau)^2
-$$ 各ユニット・時間において二乗誤差を最小にするような上記モデルは定数$\mu$、時間効果$\beta$、個人効果$\alpha$の線形結合で表されます。ここで、因果効果をとらえるのは処置変数$D_{it}$の係数$\hat{\tau}^{DID}$です。
+$$ 各ユニット・時間における結果変数$Y_{it}$は定数$\mu$、時間効果$\beta$、個人効果$\alpha$の線形結合で表されます。今回求めたい因果効果をとらえるのは処置変数$D_{it}$の係数$\hat{\tau}^{DID}$です。このモデルの最小化を行うことでDID推定量は求められます。
 
 *一方、*合成コントロール法は*Synthetic Control Methods for Comparative Case Studies*(*Abadie et al. 2010*) で提案されました。
 
-アイデアとしては、処置を受ける前まで処置群を統制群（処置を受けない群）の重み付け（加重平均）で近似できるような重み $\hat\omega$ を求めて、その加重平均で処置後の処置群を予測し、その差分を処置効果とするものです。それを表す式は以下の通りで
+アイデアとしては、処置を受ける前まで処置群を統制群（処置を受けない群）の重み付け（加重平均）で近似できるような重み $\hat\omega$ を求めて、その加重平均で処置後の処置群を予測し、その差分を処置効果とするものです。それを表す式は以下の通りです。
 
 $$
 \hat{\tau}_{it}^{synth}=Y_{Nt}-\sum_{i=1}^{N-1}\omega_{i}Y_{it} 
 $$
 
-問題の重み$\omega$は処置前までの期間、つまりT-1期に注目して以下のL2正則化項（罰則付き）二乗誤差最小化問題で求められます。
+問題の重み$\hat\omega_{i}$は処置前までの期間、つまり$T-1$期に注目して以下のL2正則化項（罰則付き）二乗誤差最小化問題で求められます。
 
 $$
 \hat{\omega}_{i}=\underset{\omega}{\arg\min}\frac{1}{T-1} \sum_{t=1}^{T-1}(\sum_{i=1}^{N-1} \omega_{i} Y_{i t}-Y_{N t})^{2}+ \frac{1}{2}\zeta\|\omega\|_2
@@ -108,3 +108,9 @@ mapview::mapview(x=jpn1)
 ```
 
 ## 中国青海-西蔵鉄道開通による経済効果分析
+
+参考文献
+
+1.  Synthetic Difference In Differences(Arkhangelsky et. al., 2019)を読んだ<https://dropout009.hatenablog.com/entry/2019/05/06/185620>
+
+2.  その無茶振り，（Rで）GISが解決します<https://rpubs.com/k_takano/r_de_gis>
