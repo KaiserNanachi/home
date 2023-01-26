@@ -12,6 +12,8 @@ output:
 
 # 工事中
 
+quanteda - bug of words - topic model - LDA - keyAtm - STM
+
 ```{r setup, include=FALSE}
 
 ```

@@ -54,6 +54,16 @@ terra::plot(ntl1992)
 ```{r}
 terra::plot(ntl2018)
 ```
+### What is NTL(night-time lights)
+・夜間光は近年民生・産業部門での複合的な経済指標の代理変数として社会科学領域で活用が広まっています
+
+・NTL(夜間光)データについては、中小発展途上国のさらに細かい行政区において経済変数としての意味を成すかという議論が活発に行われている。
+
+・[Are night-time lights a good proxy of economic activity in rural areas in middle and low-income countries? Examining the empirical evidence from Colombia](https://www.sciencedirect.com/science/article/pii/S235293852100183X)は、コロンビアを例に夜間光と詳細な経済指数を比較し分析した結果、都市部の方が精度は高いが、農村部でも正の相関が確認されており、非常に有用なデータであることを示している。
+
+・特に、経済状況を示すデータにアクセスできないような地域（今回示す北方領土やチベット地域）を時系列で分析する際に有用と考えることができる。
+
+・今回用いるのは、1992-2018年までのNTLであり、Harmonized VIIRS & DMSPという二種類の計測方法を重み図けしてつなぎ合わせたものを利用する。
 
 ## Synthetic DID法とは
 
@@ -257,6 +267,8 @@ synthdid_units_plot(tau.hat, units = rownames(top.controls))
 今後、中国のゼロコロナ政策撤廃によりエネルギー需要がさらにひっ迫することが予見されており、西側諸国に制裁を受けているロシアは極東のエネルギー開発に活路を見出す可能性がある。
 
 ## 中国青海-西蔵鉄道開通による経済効果分析
+
+工事中です。
 
 データ・参考文献
 

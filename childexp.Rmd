@@ -15,18 +15,31 @@ load("data/RData/all.RData")
 load("data/RData/hama.RData")
 ```
 
-```{r}
+# 現17-20歳の分布
 
+```{r}
 mapview::mapview(x=map5,
                  zcol="exp2",
                  color="transparent")
+```
 
+# 現12-16歳の分布(小地域)
+
+```{r}
+mapview::mapview(x=map5,
+                 zcol="exp1",
+                 color="transparent")
+```
+
+# 現高校生の分布（メッシュ）
+
+```{r}
 mapview::mapview(x=hamamesh3,
                    zcol="total",
                    color="transparent")
 ```
 
-### モチベーション
+# モチベーション
 
 -   今月初めに総務省統計局から基礎地区データの開示
 
@@ -41,3 +54,187 @@ mapview::mapview(x=hamamesh3,
 -   しかし
 
 -   基本単位区データは老人ホームや療養所？等も人口として捉えてしまう
+
+
+# コード
+
+
+```{r,eval=F,echo=T}
+
+isogo<-sf::read_sf(dsn="data/hama/r2kb14107.shp")
+kanazawa<-sf::read_sf(dsn="data/hama/r2kb14108.shp")
+mesh1<-sf::read_sf(dsn="data/hamamesh/MESH05238.shp")
+mesh2<- sf::read_sf(dsn="data/hamamesh/MESH05239.shp")
+mesh3<-sf::read_sf(dsn="data/hamamesh/MESH05338.shp")
+mesh4<-sf::read_sf(dsn="data/hamamesh/MESH05339.shp")
+
+layer <- read_csv("data/hama/layer.csv", 
+                  locale = locale(encoding = "SHIFT-JIS"))
+
+layer2<-layer %>% 
+  filter(CITYNAME == "横浜市磯子区"|CITYNAME=="横浜市金沢区") %>% 
+  mutate(jinko=as.numeric(T001082001),
+         juku1=as.numeric(juku1),
+         juku2=as.numeric(juku2),
+         juku1m=as.numeric(juku1m),
+         juku2m=as.numeric(juku2m),
+         juku1w=as.numeric(juku1w),
+         juku2w=as.numeric(juku2w)) %>% 
+  select(KEY_CODE ,CITYNAME,NAME,jinko,juku1,juku2,juku1m,juku2m,juku1w,juku2w) %>%
+  mutate(per1=juku1/jinko,
+         per2=juku2/jinko)
+
+area<-bind_rows(isogo,kanazawa)
+
+area2<-area %>% 
+  mutate(persetai=JINKO/SETAI) %>% 
+  select(KEY_CODE,CITY_NAME,S_NAME,AREA,JINKO,SETAI,geometry,PERIMETER)
+
+area3<-left_join(area2,layer2,by=c("S_NAME"="NAME"))
+
+area4 <- area3 %>% 
+  mutate(exp1=JINKO*per1,
+         exp2=JINKO*per2) %>% 
+  mutate(scale1=scale(exp1),
+         kiken=JINKO/(SETAI+1),
+         lnkiken=log(kiken+1))
+
+
+m<-area4 %>% 
+  filter(KEY_CODE.x==1410804964)
+
+
+area5 <- area4 %>% 
+  mutate(real=if_else(lnkiken>=2,0,as.numeric(JINKO)))
+
+
+area5 <- area5 %>% 
+  select(KEY_CODE.x,real,S_NAME) %>% 
+  as.tibble()
+
+area6<-area5 %>% 
+  select(S_NAME,real) %>% 
+  group_by(S_NAME) %>% 
+  summarise(pop=sum(real,na.rm=T))
+
+m<-left_join(area4,area6,by="S_NAME")
+
+m<-m %>% 
+  mutate(k=pop-jinko) %>% 
+  mutate(p=if_else(lnkiken>=2,0,as.numeric(JINKO)),
+         per1=if_else(k<=500 & k>=-500,juku1/pop,juku1/jinko),
+         per2=if_else(k<=500 & k>=-500,juku2/pop,juku2/jinko),
+         exp1=p*per1,
+         exp2=p*per2)
+m2<-m %>% 
+  select(geometry,exp1,exp2,S_NAME,KEY_CODE.x,p,per1,per2,PERIMETER,AREA,JINKO,SETAI,pop,jinko,juku1,juku2,k,CITY_NAME) 
+
+m3<-m2 %>% 
+  mutate(scale1=scale(m2$exp1),
+         scale2=scale(m2$exp2),
+         dens1=exp1/AREA,
+         dens2=exp2/AREA)
+
+m4<-bind_cols(m3,scale(m2$exp2))
+
+map4<-bind_cols(m4,scale(m4$dens2))
+
+map5<-map4 %>% 
+  mutate(meter=as.vector(scale(exp2/PERIMETER)))
+
+isogomap<-map5 %>% 
+  filter(CITY_NAME=="横浜市磯子区")
+
+mapview::mapview(x=map5,
+                 zcol="meter",
+                 color="transparent")+
+  mapview::mapview(x=map5,
+                   zcol="exp2",
+                   color="transparent")
+  
+#Mesh data
+
+mesh<-bind_rows(mesh2,mesh4)
+mesh<-mesh %>% 
+  select(KEY_CODE,geometry) %>% 
+  mutate(KEY_CODE=as.numeric(KEY_CODE))
+
+uppercens <- read_csv("data/hamamesh/uppercens.csv", 
+                      locale = locale(encoding = "SHIFT-JIS"), 
+                      na = "NA")
+lowercens <- read_csv("data/hamamesh/lowercens.csv", 
+                      locale = locale(encoding = "SHIFT-JIS"), 
+                      na = "NA")
+uppercom <- read_csv("data/hamamesh/uppercom.csv", 
+                      locale = locale(encoding = "SHIFT-JIS"), 
+                      na = "NA")
+
+lowercom <- read_csv("data/hamamesh/lowercom.csv", 
+                      locale = locale(encoding = "SHIFT-JIS"), 
+                      na = "NA")
+
+
+uppercom<-uppercom[-1,]
+lowercom<-lowercom[-1,]
+
+commute<-bind_rows(uppercom,lowercom)
+
+commute2<-commute %>% 
+  select(KEY_CODE,T001109040,T001109041,T001109042) %>% 
+  mutate(total=as.numeric(T001109040),
+         male=as.numeric(T001109041),
+         female=as.numeric(T001109042))
+
+hamamesh<-left_join(mesh,commute2,by="KEY_CODE")
+
+hamamesh2<-na.omit(hamamesh)
+
+mapview::mapview(x=intersec,
+                 zcol="total",
+                 color="transparent")
+
+hamacent<-sf::st_centroid(x=hamamesh2)
+
+mesh_fukuoka_0500_cent <- sf::st_centroid(x=mesh_fukuoka_0500) 
+  #重心と小地域ポリゴンの共通部分を取る
+
+intersec<-sf::st_intersection(x=hamacent,y=areaz) #!!!!!!
+
+
+  #小地域ポリゴンの属性がついた重心のみ残す
+  
+st_crs(hamacent)
+  
+
+areaz<-sf::st_transform(area,crs=sf::st_crs(32654))
+hamacent<-sf::st_transform(hamacent,crs=sf::st_crs(32654))
+hamamesh2<-sf::st_transform(hamamesh2,crs=sf::st_crs(32654))
+
+hamamesh3<-hamamesh %>% 
+  filter(KEY_CODE%in%intersec$KEY_CODE)
+
+save.image(file="hama.RData")
+
+
+rus<-sf::read_sf(dsn="data/RUS_adm/RUS_adm3.shp")
+kuril<-rus %>% 
+  filter(ID_1==60)
+
+intersec$totalsc
+
+intersec$totalsc<-as.vector(scale(intersec$total))
+
+mapview::mapview(x=map5,
+                 zcol="exp2",
+                 color="transparent")+
+  mapview::mapview(x=hamamesh3,
+                 zcol="lntotal",
+                 color="transparent")
+
+hamamesh3$lntotal<-log(hamamesh3$total+1)
+
+pie(c(2 %% 2, 6), col = c('red', 'yellow'), labels = NA)
+
+elem<-sf::read_sf(dsn="data/school/小学校通学区域.shp")
+
+```
