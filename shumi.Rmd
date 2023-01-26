@@ -23,9 +23,11 @@ library(fs)
 library(stringr)
 library(DT)
 library(synthdid)
+library(summarytools)
 mapview::mapviewOptions(fgb=FALSE)
 load("data/china.RData")
 load("data/sakhalin2.RData")
+load("data/sakhalin3.RData")
 ```
 
 ## 衛星夜間光データとは
@@ -188,13 +190,13 @@ east<-rusdf2 %>%
   filter(ID_1 %in% c(3,9,83,82,24,56,28,60,40,61,	12))
 ```
 
-サハリン州（北方領土も含む）の夜間光(対数)/面積データ
+極東連邦管区（北方領土も含む）の夜間光(対数)/面積データ
 
 使用したデータは後述します
 
 ```{r}
-DT::datatable(sakhalin %>% select(NAME_1,NAME_2,year,lperarea))
-
+DT::datatable(east %>% select(NAME_1,NAME_2,year,lperarea))
+summary(east %>% select(ntl,lntl,value,perarea,lperarea))
 east<-rusdf2 %>% 
   filter(ID_1 %in% c(3,9,83,82,24,56,28,60,40,61,	12))
 ```
@@ -207,7 +209,52 @@ kril %>%
   geom_line(aes(x = year, y = lperarea))
 ```
 
-### NTL analysis
+### *NTL analysis*
+
+```{r,eval=F,echo=T}
+east<-east %>%  #データ整形
+  filter(year<=2015) %>% 
+  mutate(treatment=if_else(ID_3==1820,if_else(year>=2007,1,0),0)) %>% 
+  as.data.frame()
+
+setup = panel.matrices(east,time="year",treatment= "treatment",
+                       outcome ="lperarea",unit="ID_3") #計画行列
+
+tau.hat = synthdid_estimate(setup$Y, setup$N0, setup$T0) #推定
+
+top.controls = synthdid_controls(tau.hat)[1:10, , drop=FALSE] #ウェイト計算（上位10個)
+
+se = sqrt(vcov(tau.hat, method='placebo')) #std.erro
+```
+
+点推定・95%信頼区間
+
+```{r}
+sprintf('point estimate: %1.2f', tau.hat)
+sprintf('95%% CI (%1.2f, %1.2f)', tau.hat - 1.96 * se, tau.hat + 1.96 * se)
+```
+
+推定結果(プロット)
+
+```{r}
+synthdid::synthdid_plot(tau.hat)
+```
+
+青の折れ線はクリル諸島（北方領土）のデータであり、赤のグラフは統制群の加重平均によって近似された反実仮想である。
+
+```{r}
+synthdid_units_plot(tau.hat, units = rownames(top.controls))
+```
+
+重み$\hat\omega$の大きさプロット
+
+### 結果
+
+北方領土の夜間光は仮に社会経済発展プログラムを実行しなかった場合に比べ、平均的に-0.01(log y)つまり1%減少し、[効果がある政策とは言えない]{.underline}という結果になった。
+
+しかし[他のロシア極東地域も同様に著しく発展している]{.underline}と理解することも可能であり、連邦政府がサハリン２を含む 極東開発に非常に力を入れているのが確認出来る。
+
+今後、中国のゼロコロナ政策撤廃によりエネルギー需要がさらにひっ迫することが予見されており、西側諸国に制裁を受けているロシアは極東のエネルギー開発に活路を見出す可能性がある。
 
 ## 中国青海-西蔵鉄道開通による経済効果分析
 
