@@ -36,7 +36,7 @@ title: "info"
 
 ・数学（数理統計学・解析・測度）
 
-・Python（おい）
+・Python
 
 <details>
 

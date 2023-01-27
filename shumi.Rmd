@@ -35,11 +35,13 @@ load("data/sakhalin3.RData")
 ![](images/earth_lights_lrg_Fotor.jpg){width="643"}
 
 ```{r}
-ntl1992<-terra::rast(x="data/9828827/Harmonized_DN_NTL_1992_calDMSP.tif")
-ntl2018<-terra::rast(x="data/9828827/Harmonized_DN_NTL_2018_simVIIRS.tif")
+ntl1992<-terra::rast(x="data/9828827/Harmonized_DN_NTL_2013_calDMSP.tif")
+z<-terra::rast(x="data/9828827/DN_NTL_2013_simVIIRS.tif")
+ntl2018<-terra::rast(x="data/9828827/Harmonized_DN_NTL_2014_simVIIRS.tif")
 ntl1992 <- ntl1992 %>%
   terra::crop(y=ext(c(123.1,146.9,24.0,45.7)))
-ntl2018 <- ntl2018 %>%
+
+ntl2018 <- z %>%
   terra::crop(y=ext(c(123.1,146.9,24.0,45.7)))
 ```
 
@@ -58,15 +60,19 @@ terra::plot(ntl2018)
 
 ### What is NTL(night-time lights)
 
-・夜間光は近年民生・産業部門での複合的な経済指標の代理変数として社会科学領域での応用が広まっています
+・夜間光は近年民生・産業部門での複合的な経済指標の代理変数として社会科学領域での応用が広まっています。
 
-・NTL(夜間光)データについて、中小発展途上国のさらに細かい行政区において経済変数としての意味を成すかという議論が活発に行われている。
+・NTL(夜間光)データについては、中小発展途上国のさらに細かい行政区において経済活動の代理変数として使っても良いのかという議論が活発に行われています。
 
-・[Are night-time lights a good proxy of economic activity in rural areas in middle and low-income countries? Examining the empirical evidence from Colombia](https://www.sciencedirect.com/science/article/pii/S235293852100183X)は、コロンビアを例に夜間光と詳細な経済指数を比較し分析した結果、都市部の方が精度は高いが、農村部でも正の相関が確認されており、非常に有用なデータであることを示している。
+・[Are night-time lights a good proxy of economic activity in rural areas in middle and low-income countries? Examining the empirical evidence from Colombia](https://www.sciencedirect.com/science/article/pii/S235293852100183X)論文は、コロンビアを例に夜間光と詳細な経済指数の比較分析を行いました。
 
-・特に、経済状況を示すデータにアクセスできないような地域（今回示す北方領土やチベット地域）を時系列で分析する際に有用と考えることができる。
+・結果、都市部の方が経済を予測する精度は高いですが、農村部でも十分な正の相関が確認され、夜間光が非常に有用なデータであることを示しました。
 
-・今回用いるのは、1992-2018年までのNTLであり、Harmonized VIIRS & DMSPという二種類の計測方法を重み図けしてつなぎ合わせたものを利用する。
+・特に、経済状況を示すデータにアクセスできないような地域（今回示す北方領土やチベット地域）を時系列で分析する際に有用であると考えることができます。
+
+・今回用いるのは、1992-2018年までのNTLであり、Harmonized VIIRS & DMSPという二種類の計測方法を重み図けしてつなぎ合わせたものを利用していきます。
+
+・実はこのデータは
 
 ## Synthetic DID法とは
 
@@ -114,6 +120,10 @@ $$
  (\hat{\tau}^{SDID}, \hat{\mu}, \hat{\alpha}, \hat{\beta})={\arg\min}_{\mu,\alpha,\beta,\tau} (\sum_{i=1}^N \sum_{t=1}^T(Y_{it}-\mu-\alpha_i-\beta_t-D_{it}\tau)^2 \hat{\omega}^{SDID}_i \hat{\lambda}^{SDID}_t)
 $$
 
+$$
+\mathbf{where}(\hat\lambda_0,\hat\lambda^{sdid})=\arg\min \sum_{i=1}^{N-1}(\lambda_{0}+\sum_{t=1}^{T-1}\lambda_{t}Y_{it}-\frac{1}{T_{post}}\sum_{t=T}^{Tpost}Y_{it})^2
+$$
+
 ### うれしさ
 
 ・簡単に扱える
@@ -121,6 +131,8 @@ $$
 ・説明・解釈がしやすい
 
 ・少ない処置群＆大量の対照群
+
+・夜間光データと相性がいい（観測誤差が均一に起こるため、特定ユニットに対する因果効果の推定量に影響しない)
 
 ## ロシア「クリル(北方領土)開発計画」効果検証
 
@@ -145,7 +157,7 @@ mapview(RUS %>% filter(ID_1==60))
 
 ### Descriptive statistics
 
-データ前処理（省略）
+データ前処理（省略） 折り畳み --\>
 
 ```{r,eval=F,echo=T}
 ntl<-function(x){
