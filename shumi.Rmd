@@ -72,7 +72,6 @@ terra::plot(ntl2018)
 
 ・今回用いるのは、1992-2018年までのNTLであり、Harmonized VIIRS & DMSPという二種類の計測方法を重み図けしてつなぎ合わせたものを利用していきます。
 
-・実はこのデータは
 
 ## Synthetic DID法とは
 

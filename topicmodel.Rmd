@@ -14,6 +14,6 @@ output:
 
 quanteda - bug of words - topic model - LDA - keyAtm - STM
 
-```{r setup, include=FALSE}
-
+```{r}
+library(keyATM)
 ```
