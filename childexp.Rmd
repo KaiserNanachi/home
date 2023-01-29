@@ -10,9 +10,38 @@ output:
     highlight: "pygments"
 ---
 
-```{r}
+```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
 load("data/RData/all.RData")
 load("data/RData/hama.RData")
+library(tidyverse)
+library(summarytools)
+library(mapview)
+```
+
+# ホットスポット
+
+上位25%以上の密集地帯・ホットスポットです。
+
+```{r}
+map6<-map5 %>% 
+  mutate(hotspot=if_else(exp2>=5.8,1,0)) %>% 
+  filter(hotspot==1)
+sfa<-intersec %>% 
+  select(geometry,total) %>% 
+  mutate(hot=if_else(total>=27,1,0)) %>% 
+  filter(hot==1)
+
+mp<-mapview::mapview(sfa,
+                     zcol="hot",
+                     alpha = 0,
+                     col.regions = c("orange"),
+                     map.types =c("Esri.WorldImagery","OpenStreetMap"))
+
+mapview::mapview(x=map6,
+                 zcol="hotspot",
+                 col.regions = "red",
+                 color="transparent")+
+  (mp)
 ```
 
 # 現17-20歳の分布
@@ -55,9 +84,7 @@ mapview::mapview(x=hamamesh3,
 
 -   基本単位区データは老人ホームや療養所？等も人口として捉えてしまう
 
-
 # コード
-
 
 ```{r,eval=F,echo=T}
 
