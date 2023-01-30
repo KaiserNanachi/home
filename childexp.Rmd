@@ -33,14 +33,14 @@ sfa<-intersec %>%
 
 mp<-mapview::mapview(sfa,
                      zcol="hot",
-                     alpha = 0,
                      col.regions = c("orange"),
                      map.types =c("Esri.WorldImagery","OpenStreetMap"))
 
 mapview::mapview(x=map6,
                  zcol="hotspot",
                  col.regions = "red",
-                 color="transparent")+
+                 color="transparent",
+                 map.types =c("OpenStreetMap","Esri.WorldImagery"))+
   (mp)
 ```
 
