@@ -467,18 +467,44 @@ div.tocify {
 
 <div id="トピックモデル実装" class="section level1">
 <h1>トピックモデル実装</h1>
+<div id="業界es分析" class="section level2">
+<h2>業界ES分析</h2>
 <p>Windowsでは文字化けするので<em>ubuntu22.04</em>上で操作</p>
-<p><img src="images/Rplot02.png" /></p>
-<p><img src="images/Rplot.png" /></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keyATM)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(summarytools)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readtext)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/RData/ESanalysis.RData&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ES_docs <span class="ot">&lt;-</span> <span class="fu">keyATM_read</span>(<span class="at">texts =</span> EStxt3)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ESvis <span class="ot">&lt;-</span> <span class="fu">visualize_keywords</span>(<span class="at">docs =</span> ES_docs, <span class="at">keywords =</span> keywords)</span></code></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/RData/topic.RData&quot;</span>)</span></code></pre></div>
+<div id="名詞共起ネットワーク" class="section level3">
+<h3>名詞共起ネットワーク</h3>
+<p><img src="images/Rplot02.png" /></p>
+</div>
+<div id="動詞副詞形容詞" class="section level3">
+<h3>動詞・副詞・形容詞</h3>
+<p><img src="images/freq.png" /></p>
+</div>
+<div id="topic-proportion" class="section level3">
+<h3>Topic proportion</h3>
+<p><img src="images/prop2.png" /></p>
+</div>
+<div id="keyword-assisted-topic" class="section level3">
+<h3>Keyword assisted topic</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">top_words</span>(out2)</span></code></pre></div>
+<pre><code>##      1_juku 2_kenkyu       3_arbeit     4_bukatu     5_circle Other_1
+## 1      経験     考え           強み       チーム メンバー [✓]    解決
+## 2      課題     結果           必要     練習 [✓]         行動    思い
+## 3      意識 研究 [✓]           貢献         達成         継続    行っ
+## 4      自分     目標           仕事 スタッフ [3]         活動    感じ
+## 5      参加     行う           行い     部員 [✓]         実現  お客様
+## 6      時間     大学           情報     取り組み         卒業    分析
+## 7  生徒 [✓]     問題           関係         以上         自身    成果
+## 8  授業 [✓]     改善 アルバイト [✓]         計画 サークル [✓]    全体
+## 9      大会     最終           提案         所属         興味    貴社
+## 10 勉強 [✓]     失敗           方法         努力         受験    意見</code></pre>
+</div>
+</div>
 </div>
 
 
