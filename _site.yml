@@ -7,7 +7,7 @@ navbar:
       href: index.html
     - text: "NTL analysis"
       href: shumi.html
-    - text: "Topicmodel"
+    - text: "Text analysis"
       href: topicmodel.html
     - text: "受験生期待値in杉田"
       href: childexp.html

@@ -1,5 +1,5 @@
 ---
-title: "トピックモデル実装(LDAからstmまで)"
+title: "テキスト分析"
 output:
   html_document:
     code_folding: hide
@@ -10,12 +10,25 @@ output:
     highlight: "pygments"
 ---
 
-# 工事中
+# トピックモデル実装
 
-quanteda - bug of words - topic model - LDA - keyAtm - STM
+Windowsでは文字化けするので*ubuntu22.04*上で操作
+
+![](images/Rplot02.png)
+
+![](images/Rplot.png)
 
 ```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
 library(keyATM)
 library(tidyverse)
 library(quanteda)
+library(tidyverse)
+library(summarytools)
+library(readtext)
+load("data/RData/ESanalysis.RData")
+```
+
+```{r,message=FALSE,warning=F}
+ES_docs <- keyATM_read(texts = EStxt3)
+ESvis <- visualize_keywords(docs = ES_docs, keywords = keywords)
 ```
