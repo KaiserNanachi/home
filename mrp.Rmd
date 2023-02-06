@@ -1,0 +1,25 @@
+---
+title: Multilevel regression and post-stratification
+output:
+  html_document:
+    code_folding: show
+    toc: TRUE
+    toc_depth: 3
+    toc_float: TRUE
+    number_sections: FALSE
+    highlight: "pygments"
+---
+
+```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
+library(rstanarm)
+library(ggplot2)
+library(bayesplot)
+theme_set(bayesplot::theme_default())
+options(mc.cores = 4) 
+library(dplyr)
+library(tidyr)
+```
+
+
+
+

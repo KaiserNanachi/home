@@ -11,5 +11,7 @@ navbar:
       href: topicmodel.html
     - text: "受験生期待値in杉田"
       href: childexp.html
+    - text: "MRP"
+      href: mrp.html
       
 output_dir: "docs"
