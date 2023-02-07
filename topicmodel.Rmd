@@ -12,8 +12,6 @@ output:
 
 # トピックモデル実装
 
-## 業界ES分析
-
 Windowsでは文字化けするので*ubuntu22.04*上で操作
 
 ```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
@@ -25,6 +23,104 @@ library(summarytools)
 library(readtext)
 load("data/RData/topic.RData")
 ```
+
+## 安倍晋三元首相演説
+```{r,eval=F,echo=T}
+shinzo<-c(doc1= X1$text,
+      doc2= X2$text,
+      doc3= X3$text,
+      doc4=X4$text,
+      doc5=X5$text,
+      doc6=X6$text,
+      doc7=X7$text,
+      doc8=X8$text,
+      doc9=X9$text,
+      doc10=X10$text,
+      doc11=X11$text,
+      doc12=X12$text,
+      doc13=X13$text,
+      doc14=X14$text)
+
+shinzopos <- posParallel(shinzo, format = "data.frame")
+
+shinzonoun <- subset(shinzopos, pos == "名詞")
+
+class(shinzonoun) <- "spacyr_parsed"
+
+shinzonoun <- as.tokens(shinzonoun)
+
+names(shinzonoun) <- names(shinzo) 
+
+head(shinzonoun)
+
+shinzodfm <- dfm(shinzonoun)
+
+shinzodfm <- dfm_select(shinzodfm, min_nchar = 2) 
+shinzodfm <- dfm_remove(shinzodfm, '^[ぁ-ん]+$', valuetype = 'regex') 
+shinzodfm <- dfm_remove(shinzodfm, '日本', valuetype = 'regex') 
+shinzodfm <- dfm_remove(shinzodfm, '皆さん', valuetype = 'regex') 
+```
+### 共起ネットワーク
+```{r,eval=F,echo=T}
+shinzocol <- fcm(shinzodfm)
+
+feat <- names(topfeatures(shinzocol, 100))
+
+shinzocol2 <- fcm_select(shinzocol, feat)
+
+quanteda.textplots::textplot_network(shinzocol2, min_freq = 0.95,edge_size = 0.7)
+```
+![](images/graph.png)
+
+### トピック比率
+
+```{r,eval=F,echo=T}
+keywords <- list(defense=c("自衛","米国","防衛","同盟","自衛隊"),
+                 child= c("子供","子ども","女性","教育","育児"),
+                 economy=c("経済","産業","成長","改革","企業"),
+                 japan= c("国家","日本","我が国","国民"),
+                 aiging=c("高齢","福祉","保障","医療","介護"),
+                 rural=c("地方","地域","創生","過疎","環境"))
+
+key_viz <- visualize_keywords(docs = shinzoatm, keywords = keywords)
+
+key_viz
+```
+
+![](images/shinzo%20prop-01.png)
+
+### 前期/後期でのトピックの移り変わり
+
+```{r,eval=F,echo=T}
+len<-c(0,0,0,0,0,0,0,1,1,1,1,1,1,1)
+
+docvars(shinzodfm,"half")<-len
+
+head(model.matrix(~ half, data = vars))
+
+out <- keyATM(docs              = shinzoatm,
+              no_keyword_topics = 5,
+              keywords          = keywords,
+              model             = "covariates",
+              model_settings    = list(covariates_data    = vars,
+                                       covariates_formula = ~ half),
+              options           = list(seed = 250))
+
+covariates_info(out)
+used_covariates <- covariates_get(out)
+head(used_covariates)
+
+strata_topic <- by_strata_DocTopic(out, by_var = "half",
+                                   labels = c("first", "second"))
+
+fig_doctopic <- plot(strata_topic, var_name = "half", show_topic = c(1,2,3,4,5,6))
+
+fig_doctopic
+```
+
+![](images/change.png)
+
+## 業界ES分析
 
 ### 名詞共起ネットワーク
 

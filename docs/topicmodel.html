@@ -470,8 +470,6 @@ div.tocify {
 
 <div id="トピックモデル実装" class="section level1">
 <h1>トピックモデル実装</h1>
-<div id="業界es分析" class="section level2">
-<h2>業界ES分析</h2>
 <p>Windowsでは文字化けするので<em>ubuntu22.04</em>上で操作</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keyATM)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -480,6 +478,97 @@ div.tocify {
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(summarytools)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readtext)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/RData/topic.RData&quot;</span>)</span></code></pre></div>
+<div id="安倍晋三元首相演説" class="section level2">
+<h2>安倍晋三元首相演説</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>shinzo<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="at">doc1=</span> X1<span class="sc">$</span>text,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc2=</span> X2<span class="sc">$</span>text,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc3=</span> X3<span class="sc">$</span>text,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc4=</span>X4<span class="sc">$</span>text,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc5=</span>X5<span class="sc">$</span>text,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc6=</span>X6<span class="sc">$</span>text,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc7=</span>X7<span class="sc">$</span>text,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc8=</span>X8<span class="sc">$</span>text,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc9=</span>X9<span class="sc">$</span>text,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc10=</span>X10<span class="sc">$</span>text,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc11=</span>X11<span class="sc">$</span>text,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc12=</span>X12<span class="sc">$</span>text,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc13=</span>X13<span class="sc">$</span>text,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">doc14=</span>X14<span class="sc">$</span>text)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>shinzopos <span class="ot">&lt;-</span> <span class="fu">posParallel</span>(shinzo, <span class="at">format =</span> <span class="st">&quot;data.frame&quot;</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>shinzonoun <span class="ot">&lt;-</span> <span class="fu">subset</span>(shinzopos, pos <span class="sc">==</span> <span class="st">&quot;名詞&quot;</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(shinzonoun) <span class="ot">&lt;-</span> <span class="st">&quot;spacyr_parsed&quot;</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>shinzonoun <span class="ot">&lt;-</span> <span class="fu">as.tokens</span>(shinzonoun)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(shinzonoun) <span class="ot">&lt;-</span> <span class="fu">names</span>(shinzo) </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shinzonoun)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm</span>(shinzonoun)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm_select</span>(shinzodfm, <span class="at">min_nchar =</span> <span class="dv">2</span>) </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm_remove</span>(shinzodfm, <span class="st">&#39;^[ぁ-ん]+$&#39;</span>, <span class="at">valuetype =</span> <span class="st">&#39;regex&#39;</span>) </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm_remove</span>(shinzodfm, <span class="st">&#39;日本&#39;</span>, <span class="at">valuetype =</span> <span class="st">&#39;regex&#39;</span>) </span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm_remove</span>(shinzodfm, <span class="st">&#39;皆さん&#39;</span>, <span class="at">valuetype =</span> <span class="st">&#39;regex&#39;</span>) </span></code></pre></div>
+<div id="共起ネットワーク" class="section level3">
+<h3>共起ネットワーク</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>shinzocol <span class="ot">&lt;-</span> <span class="fu">fcm</span>(shinzodfm)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>feat <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">topfeatures</span>(shinzocol, <span class="dv">100</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>shinzocol2 <span class="ot">&lt;-</span> <span class="fu">fcm_select</span>(shinzocol, feat)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>quanteda.textplots<span class="sc">::</span><span class="fu">textplot_network</span>(shinzocol2, <span class="at">min_freq =</span> <span class="fl">0.95</span>,<span class="at">edge_size =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<p><img src="images/graph.png" /></p>
+</div>
+<div id="トピック比率" class="section level3">
+<h3>トピック比率</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>keywords <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">defense=</span><span class="fu">c</span>(<span class="st">&quot;自衛&quot;</span>,<span class="st">&quot;米国&quot;</span>,<span class="st">&quot;防衛&quot;</span>,<span class="st">&quot;同盟&quot;</span>,<span class="st">&quot;自衛隊&quot;</span>),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">child=</span> <span class="fu">c</span>(<span class="st">&quot;子供&quot;</span>,<span class="st">&quot;子ども&quot;</span>,<span class="st">&quot;女性&quot;</span>,<span class="st">&quot;教育&quot;</span>,<span class="st">&quot;育児&quot;</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">economy=</span><span class="fu">c</span>(<span class="st">&quot;経済&quot;</span>,<span class="st">&quot;産業&quot;</span>,<span class="st">&quot;成長&quot;</span>,<span class="st">&quot;改革&quot;</span>,<span class="st">&quot;企業&quot;</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">japan=</span> <span class="fu">c</span>(<span class="st">&quot;国家&quot;</span>,<span class="st">&quot;日本&quot;</span>,<span class="st">&quot;我が国&quot;</span>,<span class="st">&quot;国民&quot;</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">aiging=</span><span class="fu">c</span>(<span class="st">&quot;高齢&quot;</span>,<span class="st">&quot;福祉&quot;</span>,<span class="st">&quot;保障&quot;</span>,<span class="st">&quot;医療&quot;</span>,<span class="st">&quot;介護&quot;</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">rural=</span><span class="fu">c</span>(<span class="st">&quot;地方&quot;</span>,<span class="st">&quot;地域&quot;</span>,<span class="st">&quot;創生&quot;</span>,<span class="st">&quot;過疎&quot;</span>,<span class="st">&quot;環境&quot;</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>key_viz <span class="ot">&lt;-</span> <span class="fu">visualize_keywords</span>(<span class="at">docs =</span> shinzoatm, <span class="at">keywords =</span> keywords)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>key_viz</span></code></pre></div>
+<p><img src="images/shinzo%20prop-01.png" /></p>
+</div>
+<div id="前期後期でのトピックの移り変わり" class="section level3">
+<h3>前期/後期でのトピックの移り変わり</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>len<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">docvars</span>(shinzodfm,<span class="st">&quot;half&quot;</span>)<span class="ot">&lt;-</span>len</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">model.matrix</span>(<span class="sc">~</span> half, <span class="at">data =</span> vars))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">keyATM</span>(<span class="at">docs              =</span> shinzoatm,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">no_keyword_topics =</span> <span class="dv">5</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">keywords          =</span> keywords,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">model             =</span> <span class="st">&quot;covariates&quot;</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">model_settings    =</span> <span class="fu">list</span>(<span class="at">covariates_data    =</span> vars,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">covariates_formula =</span> <span class="sc">~</span> half),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">options           =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">250</span>))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">covariates_info</span>(out)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>used_covariates <span class="ot">&lt;-</span> <span class="fu">covariates_get</span>(out)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(used_covariates)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>strata_topic <span class="ot">&lt;-</span> <span class="fu">by_strata_DocTopic</span>(out, <span class="at">by_var =</span> <span class="st">&quot;half&quot;</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;first&quot;</span>, <span class="st">&quot;second&quot;</span>))</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>fig_doctopic <span class="ot">&lt;-</span> <span class="fu">plot</span>(strata_topic, <span class="at">var_name =</span> <span class="st">&quot;half&quot;</span>, <span class="at">show_topic =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>fig_doctopic</span></code></pre></div>
+<p><img src="images/change.png" /></p>
+</div>
+</div>
+<div id="業界es分析" class="section level2">
+<h2>業界ES分析</h2>
 <div id="名詞共起ネットワーク" class="section level3">
 <h3>名詞共起ネットワーク</h3>
 <p><img src="images/Rplot02.png" /></p>
@@ -494,7 +583,7 @@ div.tocify {
 </div>
 <div id="keyword-assisted-topic" class="section level3">
 <h3>Keyword assisted topic</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">top_words</span>(out2)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">top_words</span>(out2)</span></code></pre></div>
 <pre><code>##      1_juku 2_kenkyu       3_arbeit     4_bukatu     5_circle Other_1
 ## 1      経験     考え           強み       チーム メンバー [✓]    解決
 ## 2      課題     結果           必要     練習 [✓]         行動    思い
