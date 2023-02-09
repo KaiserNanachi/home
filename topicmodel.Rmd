@@ -24,7 +24,12 @@ library(readtext)
 load("data/RData/topic.RData")
 ```
 
+## 小泉元首相と安倍元首相の所信表明/施政方針演説比較
+
+![](images/koizumiabe.png)
+
 ## 安倍晋三元首相演説
+
 ```{r,eval=F,echo=T}
 shinzo<-c(doc1= X1$text,
       doc2= X2$text,
@@ -60,7 +65,9 @@ shinzodfm <- dfm_remove(shinzodfm, '^[ぁ-ん]+$', valuetype = 'regex')
 shinzodfm <- dfm_remove(shinzodfm, '日本', valuetype = 'regex') 
 shinzodfm <- dfm_remove(shinzodfm, '皆さん', valuetype = 'regex') 
 ```
+
 ### 共起ネットワーク
+
 ```{r,eval=F,echo=T}
 shinzocol <- fcm(shinzodfm)
 
@@ -70,6 +77,7 @@ shinzocol2 <- fcm_select(shinzocol, feat)
 
 quanteda.textplots::textplot_network(shinzocol2, min_freq = 0.95,edge_size = 0.7)
 ```
+
 ![](images/graph.png)
 
 ### トピック比率
