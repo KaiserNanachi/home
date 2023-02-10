@@ -12,40 +12,24 @@ output:
 
 # トピックモデル実装
 
-Windowsでは文字化けするので*ubuntu22.04*上で操作
+## 首相所信表明/施政方針演説比較
 
-```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
+```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE,,class.source="fold-show"}
 library(keyATM)
-library(tidyverse)
 library(quanteda)
-library(tidyverse)
 library(summarytools)
 library(readtext)
+library(dplyr)
+library(RcppMeCab)
 load("data/RData/topic.RData")
 ```
 
-## 小泉元首相と安倍元首相の所信表明/施政方針演説比較
+### 形態素解析からdfm形式へ変換
 
-![](images/koizumiabe.png)
-
-## 安倍晋三元首相演説
+Windowsでは文字化けするのでUbuntu22.04上で操作
 
 ```{r,eval=F,echo=T}
-shinzo<-c(doc1= X1$text,
-      doc2= X2$text,
-      doc3= X3$text,
-      doc4=X4$text,
-      doc5=X5$text,
-      doc6=X6$text,
-      doc7=X7$text,
-      doc8=X8$text,
-      doc9=X9$text,
-      doc10=X10$text,
-      doc11=X11$text,
-      doc12=X12$text,
-      doc13=X13$text,
-      doc14=X14$text)
-
+#安倍首相演説
 shinzopos <- posParallel(shinzo, format = "data.frame")
 
 shinzonoun <- subset(shinzopos, pos == "名詞")
@@ -61,22 +45,79 @@ head(shinzonoun)
 shinzodfm <- dfm(shinzonoun)
 
 shinzodfm <- dfm_select(shinzodfm, min_nchar = 2) 
+
 shinzodfm <- dfm_remove(shinzodfm, '^[ぁ-ん]+$', valuetype = 'regex') 
-shinzodfm <- dfm_remove(shinzodfm, '日本', valuetype = 'regex') 
-shinzodfm <- dfm_remove(shinzodfm, '皆さん', valuetype = 'regex') 
+#小泉首相演説
+koizumipos <- posParallel(koizumi, format = "data.frame")
+
+koizuminoun <- subset(koizumipos, pos == "名詞")
+
+class(koizuminoun) <- "spacyr_parsed"
+
+koizuminoun <- as.tokens(koizuminoun)
+
+names(koizuminoun) <- names(koizumi) 
+
+koizumidfm <- dfm(koizuminoun)
+
+koizumidfm <- dfm_select(koizumidfm, min_nchar = 2) 
+
+koizumidfm <- dfm_remove(koizumidfm, '^[ぁ-ん]+$', valuetype = 'regex') 
 ```
 
-### 共起ネットワーク
+#### 結合させて共変量追加
 
 ```{r,eval=F,echo=T}
-shinzocol <- fcm(shinzodfm)
+prime<-rbind(koizumidfm,shinzodfm)
 
-feat <- names(topfeatures(shinzocol, 100))
+docvars(prime,"diff")<-c(rep(0,10),rep(1,14))
 
-shinzocol2 <- fcm_select(shinzocol, feat)
+vars <- docvars(prime)
 
-quanteda.textplots::textplot_network(shinzocol2, min_freq = 0.95,edge_size = 0.7)
+primeatm <- keyATM_read(texts = prime)
 ```
+
+### Topic
+
+```{r,eval=F,echo=T,class.source="fold-show"}
+keywords <- list(日米_自衛隊=c("自衛","米国","防衛","同盟","自衛隊"),
+                 育児= c("子供","子ども","女性","教育","育児"),
+                 経済=c("経済","産業","成長","民間","企業"),
+                 高齢化=c("高齢","福祉","保障","医療","介護"),
+                 地方=c("地方","過疎","移転"),
+                 国際=c("世界","国際","協力","平和","外交"),
+                 財政=c("財政","黒字","健全"),
+                 エネルギー=c("原発","環境","エネルギー"),
+                 憲法=c("憲法","改正"),
+                 賃金=c("賃金","賃上げ","所得","格差"))
+```
+
+### 小泉元首相と安倍元首相比較
+
+```{r,eval=F,echo=T}
+outcome <- keyATM(docs              = primeatm,
+              no_keyword_topics = 0,
+              keywords          = keywords,
+              model             = "covariates",
+              model_settings    = list(covariates_data    = vars,
+                                       covariates_formula = ~ diff),
+              options           = list(seed = 250))
+
+strata <- by_strata_DocTopic(outcome, by_var = "diff",
+                                   labels = c("小泉首相", "安倍首相"))
+
+fig <- plot(strata, var_name = "prime minister", show_topic = 1:11)
+
+fig
+```
+
+・小泉首相が特に多く言及するトピックは経済、地方、国際、財政である。やはり聖域なき構造改革、三位一体改革等の経済、行政改革による財政健全化を行っていたことから整合的である。
+
+・一方安倍首相が比較して多く言及しているのは育児、高齢化、憲法と賃金である。小泉首相があまり育児政策や高齢化政策に重きを置かなかったことが要因と思われる。また、憲法と賃金問題を特に争点にしていたことは記憶に新しい。
+
+![](images/topicnew.png)
+
+### 安倍晋三元首相演説
 
 ![](images/graph.png)
 
@@ -126,7 +167,7 @@ fig_doctopic <- plot(strata_topic, var_name = "half", show_topic = c(1,2,3,4,5,6
 fig_doctopic
 ```
 
-![](images/change.png)
+x ![](images/change.png)
 
 ## 業界ES分析
 
