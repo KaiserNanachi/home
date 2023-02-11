@@ -9,7 +9,7 @@ navbar:
       href: shumi.html
     - text: "Text analysis"
       href: topicmodel.html
-    - text: "受験生期待値in杉田"
+    - text: "受験生in杉田"
       href: childexp.html
     - text: "MRP"
       href: mrp.html
