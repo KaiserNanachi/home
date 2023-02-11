@@ -26,7 +26,13 @@ load("data/RData/topic.RData")
 
 ### 形態素解析からdfm形式へ変換
 
-Windowsでは文字化けするのでUbuntu22.04上で操作
+・Windowsでは文字化けするのでUbuntu22.04上で操作
+
+・計24回の演説を分析
+
+・形態素解析には{RcppMeCab}を使用
+
+・{quanteda}でdfm形式へ変換
 
 ```{r,eval=F,echo=T}
 #安倍首相演説

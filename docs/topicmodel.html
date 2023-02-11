@@ -482,7 +482,10 @@ class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb1-1"><a hr
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/RData/topic.RData&quot;</span>)</span></code></pre></div>
 <div id="形態素解析からdfm形式へ変換" class="section level3">
 <h3>形態素解析からdfm形式へ変換</h3>
-<p>Windowsでは文字化けするのでUbuntu22.04上で操作</p>
+<p>・Windowsでは文字化けするのでUbuntu22.04上で操作</p>
+<p>・計24回の演説を分析</p>
+<p>・形態素解析には{RcppMeCab}を使用</p>
+<p>・{quanteda}でdfm形式へ変換</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#安倍首相演説</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>shinzopos <span class="ot">&lt;-</span> <span class="fu">posParallel</span>(shinzo, <span class="at">format =</span> <span class="st">&quot;data.frame&quot;</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
