@@ -85,6 +85,12 @@ primeatm <- keyATM_read(texts = prime)
 
 ### Topic
 
+・{keyAtm}にてKeywords Assisted Topic modelを動かす
+
+・キーワードをリスト型で指定し、考慮できる新型のLDAモデル
+
+・社会科学分野での応用が期待される
+
 ```{r,eval=F,echo=T,class.source="fold-show"}
 keywords <- list(日米_自衛隊=c("自衛","米国","防衛","同盟","自衛隊"),
                  育児= c("子供","子ども","女性","教育","育児"),
