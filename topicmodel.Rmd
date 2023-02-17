@@ -10,11 +10,9 @@ output:
     highlight: "pygments"
 ---
 
-# トピックモデル実装
-
 ## 首相所信表明/施政方針演説比較
 
-```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE,,class.source="fold-show"}
+```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE,class.source="fold-show"}
 library(keyATM)
 library(quanteda)
 library(summarytools)
@@ -28,46 +26,37 @@ load("data/RData/topic.RData")
 
 ・Windowsでは文字化けするのでUbuntu22.04上で操作
 
+・形態素解析には[RcppMeCab](https://github.com/junhewk/RcppMeCab)を使用した。
+
+・システム辞書(sys_dic)に未知語に多数対応している[mecab-ipadic-NEologd](https://github.com/neologd/mecab-ipadic-neologd)を使った。
+
+・[quanteda](https://quanteda.io/index.html)でdfm形式へ変換
+
 ・計24回の演説を分析
 
-・形態素解析には{RcppMeCab}を使用
-
-・{quanteda}でdfm形式へ変換
-
-```{r,eval=F,echo=T}
+```{r,eval=F,echo=T,class.source="fold-show"}
 #安倍首相演説
-shinzopos <- posParallel(shinzo, format = "data.frame")
-
+shinzopos <- posParallel(shinzo, 
+                         format = "data.frame",
+                         sys_dic = "/usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd")
 shinzonoun <- subset(shinzopos, pos == "名詞")
-
 class(shinzonoun) <- "spacyr_parsed"
-
 shinzonoun <- as.tokens(shinzonoun)
-
 names(shinzonoun) <- names(shinzo) 
-
-head(shinzonoun)
-
 shinzodfm <- dfm(shinzonoun)
-
 shinzodfm <- dfm_select(shinzodfm, min_nchar = 2) 
-
 shinzodfm <- dfm_remove(shinzodfm, '^[ぁ-ん]+$', valuetype = 'regex') 
+
 #小泉首相演説
-koizumipos <- posParallel(koizumi, format = "data.frame")
-
+koizumipos <- posParallel(koizumi, 
+                          format = "data.frame",
+                          sys_dic = "/usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd")
 koizuminoun <- subset(koizumipos, pos == "名詞")
-
 class(koizuminoun) <- "spacyr_parsed"
-
 koizuminoun <- as.tokens(koizuminoun)
-
 names(koizuminoun) <- names(koizumi) 
-
 koizumidfm <- dfm(koizuminoun)
-
 koizumidfm <- dfm_select(koizumidfm, min_nchar = 2) 
-
 koizumidfm <- dfm_remove(koizumidfm, '^[ぁ-ん]+$', valuetype = 'regex') 
 ```
 
@@ -107,7 +96,7 @@ keywords <- list(日米_自衛隊=c("自衛","米国","防衛","同盟","自衛�
 ### 小泉元首相と安倍元首相比較
 
 ```{r,eval=F,echo=T}
-outcome <- keyATM(docs              = primeatm,
+outcome <- keyATM(docs          = primeatm,
               no_keyword_topics = 0,
               keywords          = keywords,
               model             = "covariates",

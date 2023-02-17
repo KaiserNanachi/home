@@ -22,18 +22,26 @@ library(mapview)
 
 上位25%以上の密集地帯・ホットスポットです。
 
-黄色の点：この点を中心とした250m半径の円の中に高校生が多く分布している
+黄色の点：押すと点を中心とした250m半径の円の中に高校生の数が分かる
 
-赤い区画：高校生が多くいると思われる基本単位区画（推測）
+赤い区画：高校生が多くいると思われる基本単位区画
 
 ```{r}
 map6<-map5 %>% 
   mutate(hotspot=if_else(exp2>=5.8,1,0)) %>% 
-  filter(hotspot==1)
+  filter(hotspot==1) %>% 
+  select(geometry,exp1,exp2,S_NAME,JINKO,SETAI,hotspot) %>% 
+  rename(中学生推定人数=exp1,
+         高校生_浪人推定人数=exp2,
+         町名=S_NAME,
+         単位区人口=JINKO,
+         世帯数=SETAI) %>% 
+  filter(!町名=="長浜")
 sfa<-intersec %>% 
   select(geometry,total) %>% 
   mutate(hot=if_else(total>=27,1,0)) %>% 
-  filter(hot==1)
+  filter(hot==1) %>% 
+  rename(合計人数=total)
 
 mp<-mapview::mapview(sfa,
                      zcol="hot",

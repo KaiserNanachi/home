@@ -468,8 +468,6 @@ div.tocify {
 </div>
 
 
-<div id="トピックモデル実装" class="section level1">
-<h1>トピックモデル実装</h1>
 <div id="首相所信表明施政方針演説比較" class="section level2">
 <h2>首相所信表明/施政方針演説比較</h2>
 <div class="sourceCode" id="cb1"><pre
@@ -483,43 +481,37 @@ class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb1-1"><a hr
 <div id="形態素解析からdfm形式へ変換" class="section level3">
 <h3>形態素解析からdfm形式へ変換</h3>
 <p>・Windowsでは文字化けするのでUbuntu22.04上で操作</p>
+<p>・形態素解析には<a
+href="https://github.com/junhewk/RcppMeCab">RcppMeCab</a>を使用した。</p>
+<p>・システム辞書(sys_dic)に未知語に多数対応している<a
+href="https://github.com/neologd/mecab-ipadic-neologd">mecab-ipadic-NEologd</a>を使った。</p>
+<p>・<a
+href="https://quanteda.io/index.html">quanteda</a>でdfm形式へ変換</p>
 <p>・計24回の演説を分析</p>
-<p>・形態素解析には{RcppMeCab}を使用</p>
-<p>・{quanteda}でdfm形式へ変換</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#安倍首相演説</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>shinzopos <span class="ot">&lt;-</span> <span class="fu">posParallel</span>(shinzo, <span class="at">format =</span> <span class="st">&quot;data.frame&quot;</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>shinzonoun <span class="ot">&lt;-</span> <span class="fu">subset</span>(shinzopos, pos <span class="sc">==</span> <span class="st">&quot;名詞&quot;</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#安倍首相演説</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>shinzopos <span class="ot">&lt;-</span> <span class="fu">posParallel</span>(shinzo, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">format =</span> <span class="st">&quot;data.frame&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sys_dic =</span> <span class="st">&quot;/usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>shinzonoun <span class="ot">&lt;-</span> <span class="fu">subset</span>(shinzopos, pos <span class="sc">==</span> <span class="st">&quot;名詞&quot;</span>)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(shinzonoun) <span class="ot">&lt;-</span> <span class="st">&quot;spacyr_parsed&quot;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>shinzonoun <span class="ot">&lt;-</span> <span class="fu">as.tokens</span>(shinzonoun)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(shinzonoun) <span class="ot">&lt;-</span> <span class="fu">names</span>(shinzo) </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shinzonoun)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm</span>(shinzonoun)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm_select</span>(shinzodfm, <span class="at">min_nchar =</span> <span class="dv">2</span>) </span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm_remove</span>(shinzodfm, <span class="st">&#39;^[ぁ-ん]+$&#39;</span>, <span class="at">valuetype =</span> <span class="st">&#39;regex&#39;</span>) </span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#小泉首相演説</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>koizumipos <span class="ot">&lt;-</span> <span class="fu">posParallel</span>(koizumi, <span class="at">format =</span> <span class="st">&quot;data.frame&quot;</span>)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>koizuminoun <span class="ot">&lt;-</span> <span class="fu">subset</span>(koizumipos, pos <span class="sc">==</span> <span class="st">&quot;名詞&quot;</span>)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(koizuminoun) <span class="ot">&lt;-</span> <span class="st">&quot;spacyr_parsed&quot;</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>koizuminoun <span class="ot">&lt;-</span> <span class="fu">as.tokens</span>(koizuminoun)</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(koizuminoun) <span class="ot">&lt;-</span> <span class="fu">names</span>(koizumi) </span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>koizumidfm <span class="ot">&lt;-</span> <span class="fu">dfm</span>(koizuminoun)</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>koizumidfm <span class="ot">&lt;-</span> <span class="fu">dfm_select</span>(koizumidfm, <span class="at">min_nchar =</span> <span class="dv">2</span>) </span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>koizumidfm <span class="ot">&lt;-</span> <span class="fu">dfm_remove</span>(koizumidfm, <span class="st">&#39;^[ぁ-ん]+$&#39;</span>, <span class="at">valuetype =</span> <span class="st">&#39;regex&#39;</span>) </span></code></pre></div>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>shinzonoun <span class="ot">&lt;-</span> <span class="fu">as.tokens</span>(shinzonoun)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(shinzonoun) <span class="ot">&lt;-</span> <span class="fu">names</span>(shinzo) </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm</span>(shinzonoun)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm_select</span>(shinzodfm, <span class="at">min_nchar =</span> <span class="dv">2</span>) </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>shinzodfm <span class="ot">&lt;-</span> <span class="fu">dfm_remove</span>(shinzodfm, <span class="st">&#39;^[ぁ-ん]+$&#39;</span>, <span class="at">valuetype =</span> <span class="st">&#39;regex&#39;</span>) </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#小泉首相演説</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>koizumipos <span class="ot">&lt;-</span> <span class="fu">posParallel</span>(koizumi, </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                          <span class="at">format =</span> <span class="st">&quot;data.frame&quot;</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                          <span class="at">sys_dic =</span> <span class="st">&quot;/usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd&quot;</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>koizuminoun <span class="ot">&lt;-</span> <span class="fu">subset</span>(koizumipos, pos <span class="sc">==</span> <span class="st">&quot;名詞&quot;</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(koizuminoun) <span class="ot">&lt;-</span> <span class="st">&quot;spacyr_parsed&quot;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>koizuminoun <span class="ot">&lt;-</span> <span class="fu">as.tokens</span>(koizuminoun)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(koizuminoun) <span class="ot">&lt;-</span> <span class="fu">names</span>(koizumi) </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>koizumidfm <span class="ot">&lt;-</span> <span class="fu">dfm</span>(koizuminoun)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>koizumidfm <span class="ot">&lt;-</span> <span class="fu">dfm_select</span>(koizumidfm, <span class="at">min_nchar =</span> <span class="dv">2</span>) </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>koizumidfm <span class="ot">&lt;-</span> <span class="fu">dfm_remove</span>(koizumidfm, <span class="st">&#39;^[ぁ-ん]+$&#39;</span>, <span class="at">valuetype =</span> <span class="st">&#39;regex&#39;</span>) </span></code></pre></div>
 <div id="結合させて共変量追加" class="section level4">
 <h4>結合させて共変量追加</h4>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>prime<span class="ot">&lt;-</span><span class="fu">rbind</span>(koizumidfm,shinzodfm)</span>
@@ -550,7 +542,7 @@ class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb4-1"><a hr
 </div>
 <div id="小泉元首相と安倍元首相比較" class="section level3">
 <h3>小泉元首相と安倍元首相比較</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>outcome <span class="ot">&lt;-</span> <span class="fu">keyATM</span>(<span class="at">docs              =</span> primeatm,</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>outcome <span class="ot">&lt;-</span> <span class="fu">keyATM</span>(<span class="at">docs          =</span> primeatm,</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">no_keyword_topics =</span> <span class="dv">0</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">keywords          =</span> keywords,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">model             =</span> <span class="st">&quot;covariates&quot;</span>,</span>
@@ -643,7 +635,6 @@ class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb4-1"><a hr
 ## 8  授業 [✓]     改善 アルバイト [✓]         計画 サークル [✓]    全体
 ## 9      大会     最終           提案         所属         興味    貴社
 ## 10 勉強 [✓]     失敗           方法         努力         受験    意見</code></pre>
-</div>
 </div>
 </div>
 
