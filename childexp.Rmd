@@ -1,5 +1,5 @@
 ---
-title: "受験生分布 in 磯子&金沢"
+title: "受験生分布 磯子&金沢"
 output:
   html_document:
     code_folding: hide
@@ -30,6 +30,8 @@ library(mapview)
 map6<-map5 %>% 
   mutate(hotspot=if_else(exp2>=5.8,1,0)) %>% 
   filter(hotspot==1) %>% 
+  mutate(exp1=round(exp1,digits = 1),
+         exp2=round(exp2,digits = 1)) %>% 
   select(geometry,exp1,exp2,S_NAME,JINKO,SETAI,hotspot) %>% 
   rename(中学生推定人数=exp1,
          高校生_浪人推定人数=exp2,

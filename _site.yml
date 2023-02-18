@@ -9,9 +9,9 @@ navbar:
       href: shumi.html
     - text: "Text analysis"
       href: topicmodel.html
-    - text: "受験生in杉田"
+    - text: "受験生分布全図"
       href: childexp.html
-    - text: "MRP"
+    - text: "MRP(工事中)"
       href: mrp.html
-      
+
 output_dir: "docs"
