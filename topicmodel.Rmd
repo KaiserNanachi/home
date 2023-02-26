@@ -170,6 +170,51 @@ fig_doctopic
 
 ![](images/change.png)
 
+## ゼミ演習(防衛白書研究)
+
+```{r,eval=F,echo=T,class.source="fold-show"}
+library(RcppMeCab)
+library(quanteda)
+library(keyATM)
+library(readtext)
+library(tidyverse)
+library(parallel)
+library(DT)
+options(mc.cores=parallel::detectCores())
+load("repl.RData")
+
+
+shori<-function(k){
+  k<-posParallel(k, 
+                 format = "data.frame",
+                 sys_dic = "/usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd") #並列処理形態素解析
+  q<-dfmer(k) #下の式
+  return(q)
+}
+
+dfmer<-function(x){
+  x <- subset(x, pos == c("名詞")) #名詞を抽出
+  class(x) <- "spacyr_parsed"
+  x <- as.tokens(x)
+  y <- dfm(x) #dfm形式
+  y <- dfm_select(y, min_nchar = 2) #二文字以上について抽出
+  y <- dfm_remove(y, '^[ぁ-ん]+$', valuetype = 'regex') #ひらがな除外
+  return(y)
+}
+```
+
+### 防衛白書ネットワーク
+
+![](images/network.png) 
+
+### トピック比率
+
+![](images/topicprop.png) 
+
+### パラメター
+
+![](images/meantheta.png)
+
 ## 業界ES分析 {.row}
 
 ### 名詞共起ネットワーク {.col-md-6}
