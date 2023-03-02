@@ -10,6 +10,10 @@ output:
     highlight: "pygments"
 ---
 
+```{css, echo=FALSE}
+html {font-size: 15px;}
+```
+
 [Synthetic Difference in Differences Estimation](https://synth-inference.github.io/synthdid/)
 
 [A harmonized global nighttime light dataset 1992--2018](https://www.nature.com/articles/s41597-020-0510-y)
@@ -51,13 +55,13 @@ ntl2018 <- z %>%
 
 ### 日本の夜間光 {.row}
 
-#### 1992年 {.col-md-6}
+#### 1992年 {.col-6}
 
 ```{r}
 terra::plot(ntl1992)
 ```
 
-#### 2018年 {.col-md-6}
+#### 2018年 {.col-6}
 
 ```{r}
 terra::plot(ntl2018)

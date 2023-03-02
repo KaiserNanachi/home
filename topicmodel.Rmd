@@ -10,6 +10,10 @@ output:
     highlight: "pygments"
 ---
 
+```{css, echo=FALSE}
+html {font-size: 15px;}
+```
+
 ## 首相所信表明/施政方針演説比較
 
 ```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE,class.source="fold-show"}

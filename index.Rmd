@@ -2,6 +2,10 @@
 title: "info"
 ---
 
+```{css, echo=FALSE}
+html {font-size: 15;}
+```
+
 ### 興味
 
 ・計量経済学（因果推論を軸に）

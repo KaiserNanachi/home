@@ -10,6 +10,16 @@ output:
     highlight: "pygments"
 ---
 
+```{css, echo=FALSE}
+html {font-size: 15px;}
+```
+
+1.偉大な先輩方の足跡を辿って...
+
+2.マルチレベル回帰ポスト層化を実装する
+
+3.データは先行実験を流用する
+
 ```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
 library(rstanarm)
 library(ggplot2)

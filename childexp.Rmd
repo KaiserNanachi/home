@@ -9,6 +9,9 @@ output:
     number_sections: FALSE
     highlight: "pygments"
 ---
+```{css, echo=FALSE}
+html {font-size: 15px;}
+```
 
 ```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE}
 load("data/RData/all.RData")
