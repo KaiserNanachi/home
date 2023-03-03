@@ -67,26 +67,29 @@ mapview::mapview(x=map6,
 
 # 現17-20歳の分布
 
-```{r}
+```{r,warning=FALSE}
 mapview::mapview(x=map5,
                  zcol="exp2",
-                 color="transparent")
+                 color="transparent",
+                col.regions=rev(RColorBrewer::brewer.pal(n=20,name="Spectral")))
 ```
 
 # 現12-16歳の分布(小地域)
 
-```{r}
+```{r,warning=FALSE}
 mapview::mapview(x=map5,
                  zcol="exp1",
-                 color="transparent")
+                 color="transparent",
+                col.regions=rev(RColorBrewer::brewer.pal(n=20,name="Spectral")))
 ```
 
 # 現高校生の分布（メッシュ）
 
-```{r}
+```{r,warning=FALSE}
 mapview::mapview(x=hamamesh3,
                    zcol="total",
-                   color="transparent")
+                   color="transparent",
+                 col.regions=rev(RColorBrewer::brewer.pal(n=8,name="Spectral")))
 ```
 
 # モチベーション
