@@ -209,11 +209,11 @@ dfmer<-function(x){
 
 ### 防衛白書ネットワーク
 
-![](images/network.png) 
+![](images/network.png)
 
 ### トピック比率
 
-![](images/topicprop.png) 
+![](images/topicprop.png)
 
 ### パラメター
 
