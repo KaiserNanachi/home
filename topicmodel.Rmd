@@ -28,6 +28,8 @@ load("data/RData/topic.RData")
 
 ### 形態素解析からdfm形式へ変換
 
+・準教師付きトピックモデル{keyAtm}を利用
+
 ・Windowsでは文字化けするのでUbuntu22.04上で操作
 
 ・形態素解析には[RcppMeCab](https://github.com/junhewk/RcppMeCab)を使用した。
