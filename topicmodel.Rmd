@@ -14,8 +14,6 @@ output:
 html {font-size: 15px;}
 ```
 
-## 首相所信表明/施政方針演説比較
-
 ```{r ,echo=TRUE,include=TRUE,warning=FALSE,error=FALSE,message=FALSE,class.source="fold-show"}
 library(keyATM)
 library(quanteda)
@@ -23,8 +21,66 @@ library(summarytools)
 library(readtext)
 library(dplyr)
 library(RcppMeCab)
+library(tidyverse)
+library(lubridate)
+library(DT)
 load("data/RData/topic.RData")
+load("data/tweets/sent.RData")
+tw <- read_csv("data/tw.csv")
 ```
+
+## SENTIMENT ANALYSIS(古典派)
+
+[**シリコンバレー銀を破綻に追い込んだ現代の取り付け騒ぎ、ツイッターがパニックあおる**](https://www.cnn.co.jp/tech/35201318.html)
+
+1.rtweet packageでSVBに関するツイートをスクレイピング
+
+2.Afinn感情極性リストにおいて単語を-5\~5の数値に変換
+
+3.時系列でプロット
+
+```{r,eval=F,echo=T,class.source="fold-show"}
+
+#スクレイピング
+resultEST3 <- search_tweets(
+  q = "\"SVB\"OR\"silicon valley bank \"",
+  n = 18000,
+  result_type="mixed",
+  include_rts=F,
+  since="2023-03-06_00:00:00_EST",
+  until="2023-03-11_02:00:00_EST",
+  lang="en",
+  retryonratelimit = TRUE
+)
+
+#感情分析（AFINN)
+sent<-tweets %>%
+  select(created_at, text) %>%
+  unnest_tokens(word, text) %>%
+  inner_join(get_sentiments("afinn"))%>%
+  mutate(time = floor_date(created_at, unit = "hour")) %>% 
+  group_by(time) %>% 
+  summarise(ave=mean(value)) %>% 
+  mutate(num = row_number())
+
+```
+
+```{r}
+
+DT::datatable(tw %>% 
+                select(created_at,text))
+sent<-a
+
+ggplot(sent,aes(time,ave)) + 
+  geom_point()+
+  geom_smooth()
+fit <- smooth.spline(sent$num, sent$ave, df = 10)
+plot(sent$num, sent$ave)
+lines(fit, col = "blue")
+
+```
+
+## 首相所信表明/施政方針演説比較
 
 ### 形態素解析からdfm形式へ変換
 
