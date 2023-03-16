@@ -1,5 +1,5 @@
 ---
-title: "テキスト分析"
+title: "量的テキスト分析"
 output:
   html_document:
     code_folding: hide
@@ -29,11 +29,13 @@ load("data/tweets/sent.RData")
 tw <- read_csv("data/tw.csv")
 ```
 
-## SENTIMENT ANALYSIS(古典派)
+## ①SENTIMENT ANALYSIS(古典派)
 
 [**シリコンバレー銀を破綻に追い込んだ現代の取り付け騒ぎ、ツイッターがパニックあおる**](https://www.cnn.co.jp/tech/35201318.html)
 
-1.rtweet packageでSVBに関するツイートをスクレイピング
+**↑上記記事に興味が湧き実際に可視化することに**
+
+1.rtweet packageでSVBに関する東部標準時3/6\~3/11日の間に投稿されたツイートをスクレイピング
 
 2.Afinn感情極性リストにおいて単語を-5\~5の数値に変換
 
@@ -65,22 +67,34 @@ sent<-tweets %>%
 
 ```
 
-```{r}
+### tweet内容
+
+```{r,warning=FALSE,error=FALSE,message=FALSE}
 
 DT::datatable(tw %>% 
                 select(created_at,text))
+```
+
+### Plot
+
+```{r}
 sent<-a
 
 ggplot(sent,aes(time,ave)) + 
   geom_point()+
   geom_smooth()
-fit <- smooth.spline(sent$num, sent$ave, df = 10)
+
+fit <- smooth.spline(sent$num, sent$ave, df = 15)
 plot(sent$num, sent$ave)
 lines(fit, col = "blue")
 
 ```
 
-## 首相所信表明/施政方針演説比較
+↑二枚目のプロットに関して、感情時系列に波がある→恐怖と楽観が交互に訪れる
+
+恐怖や不安もバックラッシュを起こす？
+
+## ②首相所信表明/施政方針演説比較
 
 ### 形態素解析からdfm形式へ変換
 
@@ -232,7 +246,7 @@ fig_doctopic
 
 ![](images/change.png)
 
-## ゼミ演習(防衛白書研究)
+## ③ゼミ演習(防衛白書研究)
 
 ```{r,eval=F,echo=T,class.source="fold-show"}
 library(RcppMeCab)
@@ -277,7 +291,7 @@ dfmer<-function(x){
 
 ![](images/meantheta.png)
 
-## 業界ES分析 {.row}
+## ④業界ES分析 {.row}
 
 ### 名詞共起ネットワーク {.col-md-6}
 

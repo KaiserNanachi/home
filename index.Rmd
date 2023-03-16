@@ -1,10 +1,12 @@
 ---
-title: "info"
+title: "~~手作り感に満ちた~~ホームページ"
 ---
 
 ```{css, echo=FALSE}
 html {font-size: 15;}
 ```
+
+
 
 ### 興味
 
