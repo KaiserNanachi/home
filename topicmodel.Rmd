@@ -83,6 +83,11 @@ sent<-a
 ggplot(sent,aes(time,ave)) + 
   geom_point()+
   geom_smooth()
+```
+
+・yが大きいとposivite,小さいとnegative感情である。
+
+```{r}
 
 fit <- smooth.spline(sent$num, sent$ave, df = 15)
 plot(sent$num, sent$ave)
@@ -90,9 +95,7 @@ lines(fit, col = "blue")
 
 ```
 
-↑二枚目のプロットに関して、感情時系列に波がある→恐怖と楽観が交互に訪れる
-
-恐怖や不安もバックラッシュを起こす？
+・↑二枚目のプロットに関して、感情時系列に波がある→恐怖と楽観が交互に訪れる。恐怖や不安もバックラッシュを起こす?
 
 ## ②首相所信表明/施政方針演説比較
 
