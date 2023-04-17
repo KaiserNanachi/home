@@ -14,6 +14,8 @@ navbar:
       href: childexp.html
     - text: "MRP(工事中)"
       href: mrp.html
+    - text: "R-Python連携"
+      href: reticulate.html
 
 output:
   html_document:
