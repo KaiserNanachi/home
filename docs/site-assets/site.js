@@ -58,6 +58,15 @@
       if (new URL(anchor.href).pathname === path) anchor.setAttribute('aria-current', 'page');
     });
     document.body.classList.add('site-ready');
+    // Legacy htmlwidgets can initialize before the asynchronously loaded shell
+    // changes their width. Let their existing resize handlers remeasure them.
+    if (!isStat && !isChinese && !isHome && document.querySelector('.navbar.navbar-default')) {
+      const remeasure = () => setTimeout(() => window.dispatchEvent(new Event('resize')), 0);
+      document.querySelectorAll('link[href*="site-assets/site.css"]').forEach(link => {
+        if (!link.sheet) link.addEventListener('load', remeasure, {once: true});
+      });
+      remeasure();
+    }
     if (isStat) {
       const updateHeight = () => document.documentElement.style.setProperty('--site-header-height', `${Math.max(0, header.getBoundingClientRect().bottom)}px`);
       updateHeight();
