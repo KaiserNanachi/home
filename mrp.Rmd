@@ -10,6 +10,8 @@ output:
     highlight: "pygments"
 ---
 
+**作成途中：** このページは構成と分析のメモであり、推定結果はまだ掲載していません。
+
 ```{css, echo=FALSE}
 html {font-size: 15px;}
 ```

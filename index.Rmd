@@ -1,64 +1,48 @@
 ---
-title: "Info(仮)"
+title: "FIELD NOTES｜学びと探究の記録"
+output:
+  html_document:
+    toc: false
 ---
 
-```{css, echo=FALSE}
-html {font-size: 15;}
+```{=html}
+<main class="home-wrap">
+  <section class="home-hero" aria-labelledby="home-title">
+    <div class="hero-copy">
+      <div class="home-kicker">A SPACE TO LEARN &amp; EXPLORE</div>
+      <h1 id="home-title">知ることを、<br><span>もっと自由に。</span></h1>
+      <p class="hero-description">ことばを覚える。データから考える。<br>気になることを、手を動かしながら探究するための場所です。</p>
+      <a id="surprise-link" class="surprise" href="learning/chinese.html">今日の寄り道 <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="240" cy="240" r="186" fill="#d1f15e"/>
+        <circle cx="240" cy="240" r="151" fill="none" stroke="#20241c" stroke-width="1"/>
+        <circle cx="240" cy="240" r="113" fill="none" stroke="#20241c" stroke-width="1" stroke-dasharray="3 7"/>
+        <path d="M65 267 C130 213 160 301 227 210 S322 202 401 126" fill="none" stroke="#20241c" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="132" cy="252" r="7" fill="#f08b72" stroke="#20241c" stroke-width="2"/><circle cx="227" cy="210" r="7" fill="#f08b72" stroke="#20241c" stroke-width="2"/><circle cx="347" cy="185" r="7" fill="#f08b72" stroke="#20241c" stroke-width="2"/>
+        <g class="orbit"><circle cx="240" cy="54" r="17" fill="#f08b72" stroke="#20241c" stroke-width="2"/><path d="M240 44v20M230 54h20" stroke="#20241c" stroke-width="2"/></g>
+        <rect x="168" y="291" width="145" height="58" rx="29" fill="#f6f4e9" stroke="#20241c" stroke-width="2"/><text x="240" y="328" text-anchor="middle" fill="#20241c" font-family="Georgia,serif" font-size="24" font-weight="bold">学  +  ∑</text>
+        <path d="M359 78l5 13 13 5-13 5-5 13-5-13-13-5 13-5z" fill="#20241c"/>
+      </svg><span class="hero-art-note">CURIOSITY<br>IN MOTION ↗</span>
+    </div>
+  </section>
+  <div id="home-filters" class="home-filters" role="group" aria-label="ホームの表示内容" hidden><span>EXPLORE BY</span><button type="button" data-filter="all" aria-pressed="true">すべて</button><button type="button" data-filter="learn" aria-pressed="false">学ぶ</button><button type="button" data-filter="explore" aria-pressed="false">分析を見る</button></div>
+  <section class="home-section" data-home-category="learn" aria-labelledby="learn-title">
+    <div class="section-heading"><div><div class="section-kicker">01 / LEARNING</div><h2 id="learn-title">学びの道具箱。</h2></div><p>自分のペースで、少しずつ。<br>触って、試して、理解を深める。</p></div>
+    <div class="home-learning">
+      <a class="learn-card chinese" href="learning/chinese.html"><span class="card-eyebrow">LANGUAGE / 2,000 WORDS</span><span class="card-mark" aria-hidden="true">語</span><span class="card-headline"><h3>中国語を学ぶ。</h3><p>実用順の2,000語を、発音・例文と一緒に。単語や例文のテストにも挑戦。</p></span><span class="card-bottom">中国語学習へ <span class="card-arrow" aria-hidden="true">↗</span></span></a>
+      <a class="learn-card stats" href="learning/statistics-pre1-interactive.html"><span class="card-eyebrow">STATISTICS / PRE-1</span><span class="card-mark" aria-hidden="true">∑</span><span class="card-headline"><h3>統計学を動かす。</h3><p>統計検定準1級の範囲を、解説・操作・演習を通して学ぶ。</p></span><span class="card-bottom">統計学の教材へ <span class="card-arrow" aria-hidden="true">↗</span></span></a>
+    </div>
+  </section>
+  <section class="home-section" data-home-category="explore" aria-labelledby="explore-title">
+    <div class="section-heading"><div><div class="section-kicker">02 / EXPLORATIONS</div><h2 id="explore-title">データを読む。</h2></div><p>社会を映す、さまざまなデータ。<br>分析の過程と結果をまとめています。</p></div>
+    <div class="analysis-grid">
+      <a class="analysis-card" href="shumi.html"><span class="number">01 / NIGHTTIME LIGHTS</span><h3>夜間光と地域</h3><p>衛星が捉えた夜の光と、Synthetic DIDを用いた分析。</p><span class="arrow" aria-hidden="true">↗</span></a>
+      <a class="analysis-card" href="topicmodel.html"><span class="number">02 / TEXT ANALYSIS</span><h3>テキストを分析する</h3><p>文章データからトピックを捉える、テキスト分析の記録。</p><span class="arrow" aria-hidden="true">↗</span></a>
+      <a class="analysis-card" href="childexp.html"><span class="number">03 / MAP</span><h3>受験生分布を地図で</h3><p>受験生の分布を、地図を使って見てみる。</p><span class="arrow" aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+  <footer class="home-footer"><span>FIELD NOTES — 学びと探究の記録。</span><span class="footer-links"><a href="mrp.html">MRP（作成途中）</a><a href="reticulate.html">R-Python連携（準備中）</a></span></footer>
+</main>
 ```
-
-<details>
-
-
-<summary>**自己紹介**</summary>
-
-所属: 早稲田大学政治経済学部　国際政治経済学科三年
-
-R歴:まだ一年
-
-趣味: 歴史趣味・PCガジェット趣味・文化活動全般
-
-行ってみたい都市: ブダペスト,プラハ,クラクフの中東欧あたり
-
-</details>
-
-
-
-[**幅広い分野に横断的な分析**]{.underline}
-
-[**理論と実装のバランス**]{.underline}
-
-[**楽しみながら**]{.underline}
-
-
-### 学習教材
-
-- [統計学：統計検定準1級](learning/statistics-pre1-interactive.html)
-- [中国語学習：実用順2,000語](learning/chinese.html)
-
-### 興味
-
-・計量経済学（因果推論を軸に）
-
-・地理情報システム(GIS)
-
-・自然言語処理
-
-・歴史実証
-
-・日本地方行政
-
-・Python-R-C++-Stanの連携
-
-・ベイジアン
-
-### 今後やりたいこと
-
-・部分識別
-
-・構造推定
-
-・アルゴリズム
-
-・強化学習
-
-・理論強化（数理統計学・解析・測度）

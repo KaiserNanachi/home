@@ -10,9 +10,4 @@ output:
     highlight: "pygments"
 ---
 
-
-
-
-
-
-
+**準備中：** RとPythonの連携についての内容はまだ掲載していません。

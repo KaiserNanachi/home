@@ -1,472 +1,55 @@
-<!DOCTYPE html>
-
-<html>
-
+<!doctype html>
+<html lang="ja">
 <head>
-
-<meta charset="utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
-
-
-
-<title>Info(仮)</title>
-
-<script src="site_libs/header-attrs-2.20.1/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<link href="site_libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script>
-<script src="site_libs/bs3compat-0.4.0/transition.js"></script>
-<script src="site_libs/bs3compat-0.4.0/tabs.js"></script>
-<script src="site_libs/bs3compat-0.4.0/bs3compat.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-
-<style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
-
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
-
-
-
-
-
-
-
-
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-img {
-  max-width:100%;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-.html-widget {
-  margin-bottom: 20px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-summary {
-  display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
-}
-pre code {
-  padding: 0;
-}
-</style>
-
-
-<style type="text/css">
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #adb5bd;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
-}
-</style>
-
-<script type="text/javascript">
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
-
-  // mark the anchor link active (and if it's in a dropdown, also mark that active)
-  var dropdown = menuAnchor.closest('li.dropdown');
-  if (window.bootstrap) { // Bootstrap 4+
-    menuAnchor.addClass('active');
-    dropdown.find('> .dropdown-toggle').addClass('active');
-  } else { // Bootstrap 3
-    menuAnchor.parent().addClass('active');
-    dropdown.addClass('active');
-  }
-
-  // Navbar adjustments
-  var navHeight = $(".navbar").first().height() + 15;
-  var style = document.createElement('style');
-  var pt = "padding-top: " + navHeight + "px; ";
-  var mt = "margin-top: -" + navHeight + "px; ";
-  var css = "";
-  // offset scroll position for anchor links (for fixed navbar)
-  for (var i = 1; i <= 6; i++) {
-    css += ".section h" + i + "{ " + pt + mt + "}\n";
-  }
-  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
-  document.head.appendChild(style);
-});
-</script>
-
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-  background-color: transparent;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
-<!-- code folding -->
-
-
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="中国語・統計学の教材とデータ分析の記録。">
+<title>FIELD NOTES｜学びと探究の記録</title>
+<link rel="stylesheet" href="site-assets/site.css?v=1">
+<script defer src="site-assets/site.js?v=1"></script>
+<link rel="icon" href="site-assets/favicon.svg" type="image/svg+xml">
 </head>
-
-<body>
-
-
-<div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
-
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">Homepage</a>
+<body class="field-home">
+<header id="site-header" class="site-header"><div class="site-header-inner"><a class="site-logo" href="index.html" aria-label="FIELD NOTES ホーム">FIELD NOTES</a><nav class="site-nav" aria-label="メインナビゲーション"><a href="learning/chinese.html">中国語</a><a href="learning/statistics-pre1-interactive.html">統計学</a><a href="shumi.html">夜間光</a><a href="topicmodel.html">テキスト分析</a><a href="childexp.html">受験生マップ</a></nav></div></header>
+<main class="home-wrap">
+  <section class="home-hero" aria-labelledby="home-title">
+    <div class="hero-copy">
+      <div class="home-kicker">A SPACE TO LEARN &amp; EXPLORE</div>
+      <h1 id="home-title">知ることを、<br><span>もっと自由に。</span></h1>
+      <p class="hero-description">ことばを覚える。データから考える。<br>気になることを、手を動かしながら探究するための場所です。</p>
+      <a id="surprise-link" class="surprise" href="learning/chinese.html">今日の寄り道 <span aria-hidden="true">↗</span></a>
     </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li>
-  <a href="index.html">index</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="shumi.html">NTL analysis</a>
-</li>
-<li>
-  <a href="topicmodel.html">Text analysis</a>
-</li>
-<li>
-  <a href="childexp.html">受験生分布全図</a>
-</li>
-<li>
-  <a href="mrp.html">MRP(工事中)</a>
-</li>
-<li>
-  <a href="reticulate.html">R-Py連携</a>
-</li>
-      <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">学習教材 <span class="caret"></span></a>
-  <ul class="dropdown-menu" role="menu">
-    <li><a class="dropdown-item" href="learning/statistics-pre1-interactive.html">統計学</a></li>
-    <li><a class="dropdown-item" href="learning/chinese.html">中国語学習</a></li>
-  </ul>
-</li>
-</ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-
-<div id="header">
-
-
-
-<h1 class="title toc-ignore">Info(仮)</h1>
-
-</div>
-
-
-<style type="text/css">
-html {font-size: 15;}
-</style>
-<details>
-<summary>
-<strong>自己紹介</strong>
-</summary>
-<p>所属: 早稲田大学政治経済学部　国際政治経済学科三年</p>
-<p>R歴:まだ一年</p>
-<p>趣味: 歴史趣味・PCガジェット趣味・文化活動全般</p>
-<p>行ってみたい都市: ブダペスト,プラハ,クラクフの中東欧あたり</p>
-</details>
-<p><u><strong>幅広い分野に横断的な分析</strong></u></p>
-<p><u><strong>理論と実装のバランス</strong></u></p>
-<p><u><strong>楽しみながら</strong></u></p>
-<div id="学習教材" class="section level3">
-<h3>学習教材</h3>
-<ul>
-<li><a href="learning/statistics-pre1-interactive.html">統計学：統計検定準1級</a></li>
-<li><a href="learning/chinese.html">中国語学習：実用順2,000語</a></li>
-</ul>
-</div>
-<div id="興味" class="section level3">
-<h3>興味</h3>
-<p>・計量経済学（因果推論を軸に）</p>
-<p>・地理情報システム(GIS)</p>
-<p>・自然言語処理</p>
-<p>・歴史実証</p>
-<p>・日本地方行政</p>
-<p>・Python-R-C++-Stanの連携</p>
-<p>・ベイジアン</p>
-</div>
-<div id="今後やりたいこと" class="section level3">
-<h3>今後やりたいこと</h3>
-<p>・部分識別</p>
-<p>・構造推定</p>
-<p>・アルゴリズム</p>
-<p>・強化学習</p>
-<p>・理論強化（数理統計学・解析・測度）</p>
-</div>
-
-
-
-</div>
-</div>
-
-</div>
-
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
-});
-
-
-</script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open');
-  });
-});
-</script>
-
-<!-- code folding -->
-
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="240" cy="240" r="186" fill="#d1f15e"/>
+        <circle cx="240" cy="240" r="151" fill="none" stroke="#20241c" stroke-width="1"/>
+        <circle cx="240" cy="240" r="113" fill="none" stroke="#20241c" stroke-width="1" stroke-dasharray="3 7"/>
+        <path d="M65 267 C130 213 160 301 227 210 S322 202 401 126" fill="none" stroke="#20241c" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="132" cy="252" r="7" fill="#f08b72" stroke="#20241c" stroke-width="2"/><circle cx="227" cy="210" r="7" fill="#f08b72" stroke="#20241c" stroke-width="2"/><circle cx="347" cy="185" r="7" fill="#f08b72" stroke="#20241c" stroke-width="2"/>
+        <g class="orbit"><circle cx="240" cy="54" r="17" fill="#f08b72" stroke="#20241c" stroke-width="2"/><path d="M240 44v20M230 54h20" stroke="#20241c" stroke-width="2"/></g>
+        <rect x="168" y="291" width="145" height="58" rx="29" fill="#f6f4e9" stroke="#20241c" stroke-width="2"/><text x="240" y="328" text-anchor="middle" fill="#20241c" font-family="Georgia,serif" font-size="24" font-weight="bold">学  +  ∑</text>
+        <path d="M359 78l5 13 13 5-13 5-5 13-5-13-13-5 13-5z" fill="#20241c"/>
+      </svg><span class="hero-art-note">CURIOSITY<br>IN MOTION ↗</span>
+    </div>
+  </section>
+  <div id="home-filters" class="home-filters" role="group" aria-label="ホームの表示内容" hidden><span>EXPLORE BY</span><button type="button" data-filter="all" aria-pressed="true">すべて</button><button type="button" data-filter="learn" aria-pressed="false">学ぶ</button><button type="button" data-filter="explore" aria-pressed="false">分析を見る</button></div>
+  <section class="home-section" data-home-category="learn" aria-labelledby="learn-title">
+    <div class="section-heading"><div><div class="section-kicker">01 / LEARNING</div><h2 id="learn-title">学びの道具箱。</h2></div><p>自分のペースで、少しずつ。<br>触って、試して、理解を深める。</p></div>
+    <div class="home-learning">
+      <a class="learn-card chinese" href="learning/chinese.html"><span class="card-eyebrow">LANGUAGE / 2,000 WORDS</span><span class="card-mark" aria-hidden="true">語</span><span class="card-headline"><h3>中国語を学ぶ。</h3><p>実用順の2,000語を、発音・例文と一緒に。単語や例文のテストにも挑戦。</p></span><span class="card-bottom">中国語学習へ <span class="card-arrow" aria-hidden="true">↗</span></span></a>
+      <a class="learn-card stats" href="learning/statistics-pre1-interactive.html"><span class="card-eyebrow">STATISTICS / PRE-1</span><span class="card-mark" aria-hidden="true">∑</span><span class="card-headline"><h3>統計学を動かす。</h3><p>統計検定準1級の範囲を、解説・操作・演習を通して学ぶ。</p></span><span class="card-bottom">統計学の教材へ <span class="card-arrow" aria-hidden="true">↗</span></span></a>
+    </div>
+  </section>
+  <section class="home-section" data-home-category="explore" aria-labelledby="explore-title">
+    <div class="section-heading"><div><div class="section-kicker">02 / EXPLORATIONS</div><h2 id="explore-title">データを読む。</h2></div><p>社会を映す、さまざまなデータ。<br>分析の過程と結果をまとめています。</p></div>
+    <div class="analysis-grid">
+      <a class="analysis-card" href="shumi.html"><span class="number">01 / NIGHTTIME LIGHTS</span><h3>夜間光と地域</h3><p>衛星が捉えた夜の光と、Synthetic DIDを用いた分析。</p><span class="arrow" aria-hidden="true">↗</span></a>
+      <a class="analysis-card" href="topicmodel.html"><span class="number">02 / TEXT ANALYSIS</span><h3>テキストを分析する</h3><p>文章データからトピックを捉える、テキスト分析の記録。</p><span class="arrow" aria-hidden="true">↗</span></a>
+      <a class="analysis-card" href="childexp.html"><span class="number">03 / MAP</span><h3>受験生分布を地図で</h3><p>受験生の分布を、地図を使って見てみる。</p><span class="arrow" aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+  <footer class="home-footer"><span>FIELD NOTES — 学びと探究の記録。</span><span class="footer-links"><a href="mrp.html">MRP（作成途中）</a><a href="reticulate.html">R-Python連携（準備中）</a></span></footer>
+</main>
 
 </body>
 </html>
