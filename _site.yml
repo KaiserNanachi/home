@@ -1,22 +1,32 @@
 name: "bibou"
 
-navbar: 
-  title: "homepage"
-  left:
-    - text: "index"
-      href: index.html
-    - text: "NTL analysis"
-      href: shumi.html
-    - text: "Text analysis"
-      href: topicmodel.html
-    - text: "受験生分布全図"
-      href: childexp.html
-    - text: "MRP(工事中)"
-      href: mrp.html
+navbar:
+  title: "FIELD NOTES"
+  right:
+    - text: "中国語"
+      href: learning/chinese.html
     - text: "統計学"
       href: learning/statistics-pre1-interactive.html
-    - text: "中国語学習"
-      href: learning/chinese.html
+    - text: "夜間光"
+      href: shumi.html
+    - text: "テキスト分析"
+      href: topicmodel.html
+    - text: "受験生マップ"
+      href: childexp.html
+
+output:
+  html_document:
+    includes:
+      in_header: includes/site-head.html
+    theme:
+      version: 4
+
+    highlight: textmate
+    toc: true
+    toc_float:
+      collapse: false
+    df_print: "kable"
+
 
 output_dir: "docs"
 exclude: ["input"]
