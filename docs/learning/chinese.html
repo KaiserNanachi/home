@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="中国語の実用語彙2,000語を、ピンインや例文と一緒に学びます。">
+<title>中国語 実用順2,000語｜学習教材</title>
+<style>
+:root{color-scheme:light;--ink:#172b2c;--muted:#546969;--green:#17665d;--line:#d9e2de;--paper:#fff;--bg:#f4f6f2}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic",Meiryo,sans-serif}a{color:var(--green);text-underline-offset:3px}button,input,select{font:inherit}button,a,input,select{touch-action:manipulation}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #416aa0;outline-offset:3px}.top{border-bottom:1px solid var(--line);background:#fff}.top-inner{max-width:1180px;margin:auto;min-height:65px;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{font:700 21px Georgia,serif;text-decoration:none;white-space:nowrap}.links{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}.wrap{max-width:1180px;margin:auto;padding:36px 28px 70px}.hero{background:var(--green);color:white;padding:32px 36px;border-radius:20px}.eyebrow{font-size:11px;letter-spacing:.16em;font-weight:700;color:#c1e8d2}.hero h1{font-size:clamp(25px,4vw,37px);line-height:1.35;margin:8px 0}.hero p{margin:0;color:#e3f2ea}.filters{margin:24px 0 15px;padding:20px;background:white;border:1px solid var(--line);border-radius:14px;display:grid;grid-template-columns:2fr 1fr 1.4fr;gap:14px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input,.field select{width:100%;border:1px solid #cbd8d2;border-radius:8px;background:#fff;color:var(--ink);padding:9px 10px}.info{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0;color:var(--muted);font-size:13px}.info p{margin:0}.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 8px 28px #213c370a}.card-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.word{font-size:24px;line-height:1.3;font-weight:700;margin:0}.rank{font-size:12px;color:var(--muted);white-space:nowrap}.pinyin{color:var(--green);margin:3px 0 8px}.meaning{font-size:16px;font-weight:600;margin:0}.meta{font-size:12px;color:var(--muted);margin:7px 0 0}.example{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.example p{margin:2px 0}.example .ja{color:var(--muted);font-size:13px}.note{font-size:12px;color:var(--muted);margin:9px 0 0}.empty{grid-column:1/-1;background:white;border:1px solid var(--line);border-radius:14px;padding:28px;text-align:center;color:var(--muted)}.pagination{display:flex;justify-content:center;align-items:center;gap:18px;margin-top:28px}.pagination button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:8px 16px;cursor:pointer}.pagination button:hover:not(:disabled){border-color:var(--green);background:#e6f3ed}.pagination button:disabled{opacity:.45;cursor:default}footer{font-size:12px;color:var(--muted);margin-top:26px}@media(max-width:700px){.top-inner{padding:12px 18px;align-items:flex-start;flex-direction:column}.wrap{padding:25px 18px 50px}.hero{padding:25px}.filters,.list{grid-template-columns:1fr}.filters{gap:12px}.card{padding:17px}}
+</style>
+<script defer src="chinese-vocabulary.js"></script>
+<script defer src="chinese.js"></script>
+</head>
+<body>
+<header class="top"><div class="top-inner"><a class="brand" href="../index.html">Learning Notes</a><nav class="links" aria-label="教材ナビゲーション"><a href="../index.html">ホーム</a><a href="statistics-pre1-interactive.html">統計学</a><a href="chinese.html" aria-current="page">中国語学習</a></nav></div></header>
+<main class="wrap">
+<section class="hero"><div class="eyebrow">CHINESE VOCABULARY</div><h1>中国語 実用順2,000語</h1><p>よく使う単語から、発音・意味・例文を一緒に学ぶ。</p></section>
+<section class="filters" aria-label="単語を絞り込む"><div class="field"><label for="search">単語・ピンイン・意味・例文を検索</label><input id="search" type="search" placeholder="例：我、wo、私" autocomplete="off"></div><div class="field"><label for="stage">段階</label><select id="stage"><option value="">すべての段階</option></select></div><div class="field"><label for="use">用途</label><select id="use"><option value="">すべての用途</option></select></div></section>
+<div class="info"><p id="status" role="status" aria-live="polite">単語を読み込んでいます…</p><a href="chinese-vocabulary.csv" download>元のCSVをダウンロード</a></div>
+<section id="results" class="list" aria-label="単語一覧"></section>
+<nav class="pagination" aria-label="ページ移動"><button id="previous" type="button">前へ</button><span id="page"></span><button id="next" type="button">次へ</button></nav>
+<footer>発音や例文の注意点は各単語に表示しています。</footer>
+</main>
+<noscript><p>単語一覧を表示するにはJavaScriptを有効にしてください。<a href="chinese-vocabulary.csv">CSVをダウンロード</a>することもできます。</p></noscript>
+</body>
+</html>

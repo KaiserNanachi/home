@@ -2,6 +2,11 @@
 title: "info"
 ---
 
+### 学習教材
+
+- [統計学：統計検定準1級](learning/statistics-pre1-interactive.html)
+- [中国語学習：実用順2,000語](learning/chinese.html)
+
 ### 興味
 
 ・計量経済学（因果推論を軸に）
