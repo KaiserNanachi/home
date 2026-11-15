@@ -23,3 +23,6 @@ body.site-ready.site-chinese .hero,body.site-ready.site-stat .hero{position:rela
 body.archive{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;line-height:1.7}.site-legacy .section,.site-legacy .row>*{min-width:0}.site-legacy .kable-table{max-width:100%;overflow-x:auto}.site-legacy .kable-table table{width:max-content;min-width:100%}@media(prefers-reduced-motion:reduce){.site-stat .sidebar,.site-stat .course-card{transition:none!important}}
 /* R Markdown widgets may carry fixed inline widths; keep maps within the viewport. */
 .site-legacy .leaflet.html-widget{max-width:100%}
+
+/* A new reading room joins the two interactive learning tools. */
+.learn-card.constitutions{grid-column:1/-1;min-height:245px;background:var(--field-ink);color:var(--field-paper)}.learn-card.constitutions .card-mark{color:var(--field-lime);opacity:.22}.learn-card.constitutions .card-eyebrow,.learn-card.constitutions .card-bottom{color:var(--field-lime)}.learn-card.constitutions .card-headline p{max-width:720px}

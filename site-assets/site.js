@@ -14,6 +14,7 @@
   const pages = [
     ['中国語', 'learning/chinese.html'],
     ['統計学', 'learning/statistics-pre1-interactive.html'],
+    ['世界の憲法', 'learning/constitutions.html'],
     ['夜間光', 'shumi.html'],
     ['テキスト分析', 'topicmodel.html'],
     ['受験生マップ', 'childexp.html']
@@ -25,8 +26,9 @@
     const path = window.location.pathname;
     const isStat = path.endsWith('/learning/statistics-pre1-interactive.html');
     const isChinese = path.endsWith('/learning/chinese.html');
+    const isConstitutions = path.endsWith('/learning/constitutions.html');
     const isHome = path.endsWith('/') || path.endsWith('/index.html');
-    document.body.classList.add(isStat ? 'site-stat' : isChinese ? 'site-chinese' : 'site-legacy');
+    document.body.classList.add(isStat ? 'site-stat' : isChinese ? 'site-chinese' : isConstitutions ? 'site-constitutions' : 'site-legacy');
     if (isHome) document.body.classList.add('field-home');
     let header = document.getElementById('site-header');
     if (!header) {

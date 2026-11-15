@@ -149,13 +149,13 @@ window.buildTabsets = function(tocID) {
   if (!document.querySelector('link[data-fieldnotes-shell]')) {
     var css = document.createElement('link');
     css.rel = 'stylesheet';
-    css.href = new URL('site-assets/site.css?v=1', root).href;
+    css.href = new URL('site-assets/site.css?v=2', root).href;
     css.dataset.fieldnotesShell = 'true';
     document.head.appendChild(css);
   }
   if (!document.querySelector('script[data-fieldnotes-shell]')) {
     var script = document.createElement('script');
-    script.src = new URL('site-assets/site.js?v=1', root).href;
+    script.src = new URL('site-assets/site.js?v=2', root).href;
     script.dataset.fieldnotesShell = 'true';
     document.head.appendChild(script);
   }
