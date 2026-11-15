@@ -86,9 +86,17 @@
   const endButton = document.getElementById('quiz-end');
   const quizContent = document.getElementById('quiz-content');
   let quiz = null;
-  const answerSets = {'zh-ja': new Map(), 'ja-zh': new Map()};
+  const formats = {
+    'zh-ja': {promptIndex: 3, answerIndex: 5, title: 'この中国語の意味は？', promptLang: 'zh-Hans', answerLang: 'ja'},
+    'ja-zh': {promptIndex: 5, answerIndex: 3, title: 'この日本語に合う中国語は？', promptLang: 'ja', answerLang: 'zh-Hans'},
+    'zh-pinyin': {promptIndex: 3, answerIndex: 4, title: 'この中国語のピンインは？', promptLang: 'zh-Hans', answerLang: 'zh-Latn-pinyin'},
+    'pinyin-zh': {promptIndex: 4, answerIndex: 3, title: 'このピンインに合う中国語は？', promptLang: 'zh-Latn-pinyin', answerLang: 'zh-Hans'},
+    'example-zh-ja': {promptIndex: 6, answerIndex: 7, title: 'この中国語例文の意味は？', promptLang: 'zh-Hans', answerLang: 'ja'},
+    'example-ja-zh': {promptIndex: 7, answerIndex: 6, title: 'この日本語例文に合う中国語は？', promptLang: 'ja', answerLang: 'zh-Hans'}
+  };
+  const answerSets = Object.fromEntries(Object.keys(formats).map(dir => [dir, new Map()]));
   for (const row of rows) {
-    for (const [dir, promptIndex, answerIndex] of [['zh-ja', 3, 5], ['ja-zh', 5, 3]]) {
+    for (const [dir, {promptIndex, answerIndex}] of Object.entries(formats)) {
       const prompt = row[promptIndex].trim();
       const answer = row[answerIndex].trim();
       if (!prompt || !answer) continue;
@@ -105,8 +113,7 @@
     return copy;
   }
   function uniqueQuestions(source, dir) {
-    const promptIndex = dir === 'zh-ja' ? 3 : 5;
-    const answerIndex = dir === 'zh-ja' ? 5 : 3;
+    const {promptIndex, answerIndex} = formats[dir];
     const seen = new Set();
     return shuffle(source).filter(row => {
       const prompt = row[promptIndex].trim();
@@ -133,8 +140,7 @@
     if (test) updateAvailability();
   }
   function choicesFor(row, dir) {
-    const promptIndex = dir === 'zh-ja' ? 3 : 5;
-    const answerIndex = dir === 'zh-ja' ? 5 : 3;
+    const {promptIndex, answerIndex} = formats[dir];
     const correct = row[answerIndex].trim();
     const accepted = answerSets[dir].get(row[promptIndex].trim());
     const alternatives = [...new Set(rows.map(item => item[answerIndex].trim()).filter(answer => answer && !accepted.has(answer)))];
@@ -180,16 +186,15 @@
   }
   function renderQuestion() {
     const row = quiz.questions[quiz.index];
-    const promptIndex = quiz.dir === 'zh-ja' ? 3 : 5;
-    const answerIndex = quiz.dir === 'zh-ja' ? 5 : 3;
+    const {promptIndex, answerIndex, title, promptLang, answerLang} = formats[quiz.dir];
     quiz.answered = false;
     const panel = document.createElement('section');
     panel.className = 'quiz-panel';
-    const promptTitle = element('h2', '', quiz.dir === 'zh-ja' ? 'この中国語の意味は？' : 'この日本語に合う中国語は？');
+    const promptTitle = element('h2', '', title);
     promptTitle.tabIndex = -1;
     const progress = element('p', 'quiz-progress', `第 ${quiz.index + 1} / ${quiz.questions.length} 問 · 正解 ${quiz.correct} 問`);
     const prompt = element('p', 'quiz-question', row[promptIndex]);
-    if (quiz.dir === 'zh-ja') prompt.lang = 'zh-Hans';
+    prompt.lang = promptLang;
     const options = document.createElement('div');
     options.className = 'quiz-options';
     options.setAttribute('aria-label', '回答の選択肢');
@@ -199,7 +204,7 @@
     choicesFor(row, quiz.dir).forEach(choice => {
       const button = element('button', '', choice);
       button.type = 'button';
-      if (quiz.dir === 'ja-zh') button.lang = 'zh-Hans';
+      button.lang = answerLang;
       button.addEventListener('click', () => {
         if (quiz.answered) return;
         quiz.answered = true;
@@ -208,7 +213,8 @@
         options.querySelectorAll('button').forEach(item => { item.disabled = true; });
         progress.textContent = `第 ${quiz.index + 1} / ${quiz.questions.length} 問 · 正解 ${quiz.correct} 問`;
         feedback.append(element('strong', '', correct ? '正解！' : '不正解'));
-        feedback.append(element('p', '', `正答：${row[3]}（${row[4]}）— ${row[5]}`));
+        feedback.append(element('p', '', `正答：${row[answerIndex]}`));
+        feedback.append(element('p', '', `単語：${row[3]}（${row[4]}）— ${row[5]}`));
         const example = element('p', '', row[6]);
         example.lang = 'zh-Hans';
         feedback.append(example, element('p', '', row[7]));
