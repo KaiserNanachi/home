@@ -20,6 +20,7 @@ output:
   html_document:
     includes:
       in_header: includes/site-head.html
+      before_body: includes/site-header.html
     theme:
       version: 4
 
