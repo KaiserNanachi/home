@@ -133,6 +133,7 @@
     if (quiz && quiz.active) settingsNote.textContent = '設定を変更しました。進行中のテストは開始時の設定で続き、再開始すると新しい設定が適用されます。';
   }
   function setMode(test) {
+    window.dispatchEvent(new Event('chinese-practice-close'));
     listView.hidden = test;
     quizView.hidden = !test;
     showList.setAttribute('aria-pressed', String(!test));
@@ -146,11 +147,16 @@
     const alternatives = [...new Set(rows.map(item => item[answerIndex].trim()).filter(answer => answer && !accepted.has(answer)))];
     return shuffle([correct, ...shuffle(alternatives).slice(0, 3)]);
   }
+  function lockModeSwitch(locked) {
+    showList.disabled = locked;
+    document.getElementById('show-dictation').disabled = locked;
+    document.getElementById('show-shadowing').disabled = locked;
+  }
   function begin(source, dir, limit) {
     const questions = uniqueQuestions(source, dir).slice(0, limit);
     if (!questions.length) return;
     quiz = {questions, dir, index: 0, correct: 0, wrong: [], answered: false, active: true};
-    showList.disabled = true;
+    lockModeSwitch(true);
     startButton.textContent = '新しい設定で再開始';
     endButton.hidden = false;
     settingsNote.textContent = '進行中は開始時の条件で出題します。設定の変更は再開始後に反映されます。';
@@ -158,7 +164,7 @@
   }
   function finish() {
     quiz.active = false;
-    showList.disabled = false;
+    lockModeSwitch(false);
     startButton.textContent = '新しいテストを開始';
     endButton.hidden = true;
     settingsNote.textContent = '';
@@ -240,7 +246,7 @@
   startButton.addEventListener('click', () => begin(filtered.map(item => item.row), direction.value, Number(countSelect.value)));
   endButton.addEventListener('click', () => {
     quiz = null;
-    showList.disabled = false;
+    lockModeSwitch(false);
     startButton.textContent = 'テスト開始';
     endButton.hidden = true;
     settingsNote.textContent = 'テストを終了しました。';
