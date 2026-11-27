@@ -5,6 +5,11 @@
   const percent = (n, total) => total ? Math.round(n / total * 100) + '%' : '未測定';
   const scoreText = rate => rate?.total ? rate.correct + '/' + rate.total +
     (rate.self ? '（自己評価 ' + rate.self + ' 件）' : '') : '未測定';
+  const displayAnswer = (question, value) => {
+    if (question.options) return [value].flat().map(index => question.options[index]).join('／');
+    if (question.type === 'boolean' && typeof value === 'boolean') return value ? '正しい' : '誤り';
+    return [value].flat().join('／');
+  };
   const uid = () => window.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
   const today = (at = Date.now()) => {
     const date = new Date(at);
@@ -301,9 +306,7 @@
       const correction = node('section', null, 'as-feedback');
       const title = savedAttempt ? (savedAttempt.correct ? '正答' : '訂正と再学習') : '模範解答と採点基準';
       correction.append(node('h2', title));
-      const answer = question.options ?
-        [question.answer].flat().map(index => question.options[index]).join('／') : [question.answer].flat().join('／');
-      correction.append(node('p', answer, 'as-answer'));
+      correction.append(node('p', displayAnswer(question, question.answer), 'as-answer'));
       if (question.feedback) correction.append(node('p', question.feedback));
       if (question.rubric?.length) {
         const list = node('ul');
@@ -404,7 +407,7 @@
           panel.append(node('p', '「思い出せない」を学習記録に保存しました。'));
         } else {
           const response = earned?.response ?? draft.response;
-          panel.append(node('p', 'あなたの回答　' + (question.options ? [response].flat().map(index => question.options[index]).join('／') : response), 'as-answer'));
+          panel.append(node('p', 'あなたの回答　' + displayAnswer(question, response), 'as-answer'));
         }
         feedback(panel, entry, step, earned, !earned && draft.review ? correct => saveAnswer(correct, draft.response, 'self') : null);
         return;

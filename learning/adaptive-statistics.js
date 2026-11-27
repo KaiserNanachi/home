@@ -114,7 +114,7 @@
   const additional = {
     prob: [{id:'prob-multiple',type:'multiple',axis:'discrimination',prompt:'P(A)>0、P(B)>0 で、A と B が排反のとき必ず成り立つものをすべて選んでください。',options:['P(A∩B)=0','P(A∪B)=P(A)+P(B)','A と B は独立','P(A|B)=0'],answer:[0,1,3],hints:['排反は同時に起こらない','和の公式と条件付き確率の分母を確認'],feedback:'交差確率は 0 で、和の公式は単純な和になる。確率がともに正なら独立ではない。'}],
     test: [{id:'test-boolean',type:'boolean',axis:'discrimination',prompt:'p値 0.04 は、帰無仮説が真である確率が 4% であることを意味する。',answer:false,hints:['p値は何を仮定して計算するか','確率を取る対象はデータか仮説か'],feedback:'p値は帰無仮説の下で観測値以上に不利な結果が出る確率であり、仮説の真偽の確率ではない。'}],
-    bayesian: [{id:'bayesian-blank',type:'blank',axis:'recall',prompt:'成功確率に Beta(2,3) の事前分布を置き、成功7回・失敗13回を観測した。事後分布の2つの形状パラメータを「9,16」の形式で記入してください。',answer:'9,16',hints:['成功数を第1パラメータに加える','失敗数を第2パラメータに加える'],feedback:'事後分布は Beta(2+7, 3+13)=Beta(9,16)。'}]
+    bayesian: [{id:'bayesian-blank',type:'blank',axis:'recall',prompt:'成功確率に Beta(2,3) の事前分布を置き、成功7回・失敗13回を観測した。事後分布の2つの形状パラメータを「第1パラメータ,第2パラメータ」の形式で記入してください。',answer:'9,16',hints:['成功数を第1パラメータに加える','失敗数を第2パラメータに加える'],feedback:'事後分布は Beta(2+7, 3+13)=Beta(9,16)。'}]
   };
   function foundationQuestions(id) {
     return (foundations[id] || []).map((row, index) => ({
