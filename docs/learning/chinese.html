@@ -11,7 +11,11 @@
 [hidden]{display:none!important}.mode-switch{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.mode-switch button,.quiz button{border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);padding:9px 16px;cursor:pointer}.mode-switch button[aria-pressed="true"],.quiz button.primary{background:var(--green);color:white;border-color:var(--green)}.mode-switch button:disabled,.quiz button:disabled{opacity:.5;cursor:default}.quiz{max-width:800px;margin-top:18px}.quiz-setup,.quiz-panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px}.quiz-setup h2,.quiz-panel h2{margin:0 0 10px;font-size:20px}.quiz-setup p,.quiz-panel p{margin:8px 0}.practice-input{width:100%;padding:10px;border:1px solid #cbd8d2;border-radius:8px;font:inherit}.quiz-settings{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}.quiz-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.quiz-note{color:var(--muted);font-size:13px}.quiz-question{font-size:clamp(26px,5vw,36px);font-weight:700;overflow-wrap:anywhere;margin:18px 0}.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.quiz-options button{text-align:left;overflow-wrap:anywhere;min-height:48px}.quiz-options button:hover:not(:disabled){border-color:var(--green);background:#e6f3ed}.quiz-feedback{border-left:4px solid var(--green);background:#f1f8f4;padding:12px 16px;margin-top:18px}.quiz-feedback p{margin:3px 0;overflow-wrap:anywhere}.quiz-result-list{padding-left:1.4em}.quiz-result-list li{margin:10px 0} @media(max-width:600px){.quiz-settings,.quiz-options{grid-template-columns:1fr}.quiz-setup,.quiz-panel{padding:18px}}
 </style>
 <script defer src="chinese-vocabulary.js"></script>
-<script defer src="chinese.js?v=4"></script>
+<link rel="stylesheet" href="adaptive.css">
+<script defer src="adaptive-engine.js"></script>
+<script defer src="adaptive-ui.js"></script>
+<script defer src="adaptive-chinese.js"></script>
+<script defer src="chinese.js?v=5"></script>
 <script defer src="chinese-practice.js?v=1"></script>
 <link rel="stylesheet" href="../site-assets/site.css?v=2">
 <script defer src="../site-assets/site.js?v=2"></script>
@@ -22,10 +26,12 @@
 
 <main class="wrap">
 <section class="hero"><div class="eyebrow">CHINESE VOCABULARY</div><h1>中国語 実用順2,000語</h1><p>よく使う単語から、発音・意味・例文を一緒に学ぶ。</p></section>
-<div class="mode-switch" aria-label="表示切替"><button id="show-list" type="button" aria-pressed="true">単語一覧</button><button id="show-quiz" type="button" aria-pressed="false">単語テスト</button><button id="show-dictation" type="button" aria-pressed="false">ディクテーション</button><button id="show-shadowing" type="button" aria-pressed="false">シャドーイング</button></div>
-<section class="filters" aria-label="単語を絞り込む"><div class="field"><label for="search">単語・ピンイン・意味・例文を検索</label><input id="search" type="search" placeholder="例：我、wo、私" autocomplete="off"></div><div class="field"><label for="stage">段階</label><select id="stage"><option value="">すべての段階</option></select></div><div class="field"><label for="use">用途</label><select id="use"><option value="">すべての用途</option></select></div></section>
+<div class="mode-switch" aria-label="表示切替"><button id="show-adaptive" type="button" aria-pressed="true">おすすめ学習</button><button id="show-list" type="button" aria-pressed="false">単語一覧</button><button id="show-quiz" type="button" aria-pressed="false">単語テスト</button><button id="show-dictation" type="button" aria-pressed="false">ディクテーション</button><button id="show-shadowing" type="button" aria-pressed="false">シャドーイング</button></div>
+<div id="adaptive-study"></div>
+<div id="legacy-controls" hidden><section class="filters" aria-label="単語を絞り込む"><div class="field"><label for="search">単語・ピンイン・意味・例文を検索</label><input id="search" type="search" placeholder="例：我、wo、私" autocomplete="off"></div><div class="field"><label for="stage">段階</label><select id="stage"><option value="">すべての段階</option></select></div><div class="field"><label for="use">用途</label><select id="use"><option value="">すべての用途</option></select></div></section>
 <div class="info"><p id="status" role="status" aria-live="polite">単語を読み込んでいます…</p><a href="chinese-vocabulary.csv" download>元のCSVをダウンロード</a></div>
-<div id="list-view">
+</div>
+<div id="list-view" hidden>
 <section id="results" class="list" aria-label="単語一覧"></section>
 <nav class="pagination" aria-label="ページ移動"><button id="previous" type="button">前へ</button><span id="page"></span><button id="next" type="button">次へ</button></nav>
 </div>

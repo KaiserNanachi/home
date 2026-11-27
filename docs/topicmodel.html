@@ -401,6 +401,34 @@ div.tocify {
 <link rel="icon" href="site-assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="site-assets/site.css?v=2">
 <script defer src="site-assets/site.js?v=2"></script>
+<style>
+html.code-folding-pending pre:is(.r, .python, .bash, .sql, .cpp, .stan, .julia, .foldable):not(.fold-none):not(.fold-show):not(.r-code-collapse pre),
+html.code-folding-pending pre:is(.r, .python, .bash, .sql, .cpp, .stan, .julia, .foldable).fold-hide:not(.fold-none):not(.r-code-collapse pre) {
+  display: none;
+}
+</style>
+<script>
+(function () {
+  var reports = /\/(shumi|topicmodel|childexp)\.html$/;
+  if (!reports.test(window.location.pathname) || typeof window.initializeCodeFolding !== 'function' ||
+      !window.jQuery || !window.jQuery.fn.collapse) return;
+
+  var initialize = window.initializeCodeFolding;
+  document.documentElement.classList.add('code-folding-pending');
+  window.initializeCodeFolding = function () {
+    try {
+      return initialize.apply(this, arguments);
+    } finally {
+      document.documentElement.classList.remove('code-folding-pending');
+    }
+  };
+  window.addEventListener('DOMContentLoaded', function () {
+    window.setTimeout(function () {
+      document.documentElement.classList.remove('code-folding-pending');
+    }, 2000);
+  });
+})();
+</script>
 </head>
 
 <body class="site-legacy site-ready">

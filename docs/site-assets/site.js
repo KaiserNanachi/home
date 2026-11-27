@@ -76,20 +76,6 @@
       window.addEventListener('scroll', updateHeight, {passive: true});
       if ('ResizeObserver' in window) new ResizeObserver(updateHeight).observe(header);
     }
-    const filters = document.getElementById('home-filters');
-    if (filters) {
-      filters.hidden = false;
-      const buttons = filters.querySelectorAll('button[data-filter]');
-      const sections = document.querySelectorAll('[data-home-category]');
-      buttons.forEach(button => button.addEventListener('click', () => {
-        buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-        sections.forEach(section => { section.hidden = button.dataset.filter !== 'all' && section.dataset.homeCategory !== button.dataset.filter; });
-      }));
-    }
-    const pick = document.getElementById('surprise-link');
-    if (pick) pick.addEventListener('click', () => {
-      pick.href = new URL(pages[Math.floor(Math.random() * pages.length)][1], base).href;
-    });
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initialize, {once: true});
