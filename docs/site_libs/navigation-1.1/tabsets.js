@@ -146,14 +146,14 @@ window.buildTabsets = function(tocID) {
   if (window.__fieldnotesBridgeRequested) return;
   window.__fieldnotesBridgeRequested = true;
   var root = new URL('../../', document.currentScript.src);
-  if (!document.querySelector('link[data-fieldnotes-shell]')) {
+  if (!document.querySelector('link[data-fieldnotes-shell],link[href*="site-assets/site.css"]')) {
     var css = document.createElement('link');
     css.rel = 'stylesheet';
     css.href = new URL('site-assets/site.css?v=2', root).href;
     css.dataset.fieldnotesShell = 'true';
     document.head.appendChild(css);
   }
-  if (!document.querySelector('script[data-fieldnotes-shell]')) {
+  if (!document.querySelector('script[data-fieldnotes-shell],script[src*="site-assets/site.js"]')) {
     var script = document.createElement('script');
     script.src = new URL('site-assets/site.js?v=2', root).href;
     script.dataset.fieldnotesShell = 'true';

@@ -270,18 +270,20 @@ $(document).ready(function () {
     dropdown.addClass('active');
   }
 
-  // Navbar adjustments
-  var navHeight = $(".navbar").first().height() + 15;
-  var style = document.createElement('style');
-  var pt = "padding-top: " + navHeight + "px; ";
-  var mt = "margin-top: -" + navHeight + "px; ";
-  var css = "";
-  // offset scroll position for anchor links (for fixed navbar)
-  for (var i = 1; i <= 6; i++) {
-    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  // Navbar adjustments (only when legacy fixed navbar is present)
+  if ($(".navbar").length) {
+    var navHeight = $(".navbar").first().height() + 15;
+    var style = document.createElement('style');
+    var pt = "padding-top: " + navHeight + "px; ";
+    var mt = "margin-top: -" + navHeight + "px; ";
+    var css = "";
+    // offset scroll position for anchor links (for fixed navbar)
+    for (var i = 1; i <= 6; i++) {
+      css += ".section h" + i + "{ " + pt + mt + "}\n";
+    }
+    style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+    document.head.appendChild(style);
   }
-  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
-  document.head.appendChild(style);
 });
 </script>
 
@@ -412,9 +414,41 @@ div.tocify {
 
 
 
+<link rel="icon" href="site-assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site-assets/site.css?v=2">
+<script defer src="site-assets/site.js?v=2"></script>
+<style>
+html.code-folding-pending pre:is(.r, .python, .bash, .sql, .cpp, .stan, .julia, .foldable):not(.fold-none):not(.fold-show):not(.r-code-collapse pre),
+html.code-folding-pending pre:is(.r, .python, .bash, .sql, .cpp, .stan, .julia, .foldable).fold-hide:not(.fold-none):not(.r-code-collapse pre) {
+  display: none;
+}
+</style>
+<script>
+(function () {
+  var reports = /\/(shumi|topicmodel|childexp)\.html$/;
+  if (!reports.test(window.location.pathname) || typeof window.initializeCodeFolding !== 'function' ||
+      !window.jQuery || !window.jQuery.fn.collapse) return;
+
+  var initialize = window.initializeCodeFolding;
+  document.documentElement.classList.add('code-folding-pending');
+  window.initializeCodeFolding = function () {
+    try {
+      return initialize.apply(this, arguments);
+    } finally {
+      document.documentElement.classList.remove('code-folding-pending');
+    }
+  };
+  window.addEventListener('DOMContentLoaded', function () {
+    window.setTimeout(function () {
+      document.documentElement.classList.remove('code-folding-pending');
+    }, 2000);
+  });
+})();
+</script>
 </head>
 
-<body>
+<body class="site-legacy site-ready">
+<header id="site-header" class="site-header"><div class="site-header-inner"><a class="site-logo" href="index.html" aria-label="FIELD NOTES ホーム">FIELD NOTES</a><nav class="site-nav" aria-label="メインナビゲーション"><a href="learning/chinese.html">中国語</a><a href="learning/statistics-pre1-interactive.html">統計学</a><a href="learning/constitutions.html">世界の憲法</a><a href="shumi.html">夜間光</a><a href="topicmodel.html">テキスト分析</a><a href="childexp.html" aria-current="page">受験生マップ</a></nav></div></header>
 
 
 <div class="container-fluid main-container">
@@ -431,47 +465,6 @@ div.tocify {
 
 
 
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">homepage</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li>
-  <a href="index.html">index</a>
-</li>
-<li>
-  <a href="shumi.html">NTL analysis</a>
-</li>
-<li>
-  <a href="topicmodel.html">Text analysis</a>
-</li>
-<li>
-  <a href="childexp.html">受験生分布全図</a>
-</li>
-<li>
-  <a href="mrp.html">MRP(工事中)</a>
-</li>
-<li>
-  <a href="learning/statistics-pre1-interactive.html">統計学</a>
-</li>
-<li>
-  <a href="learning/chinese.html">中国語学習</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
 
 <div id="header">
 
