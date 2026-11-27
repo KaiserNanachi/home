@@ -158,6 +158,7 @@
   buttons.forEach((buttonEl, index) => buttonEl.addEventListener('click', () => {
     if (buttonEl.getAttribute('aria-pressed') === 'true') return;
     stop(); session = null; content.replaceChildren(); end.hidden = true;
+    window.dispatchEvent(new Event('chinese-practice-open'));
     mode = index ? 'shadowing' : 'dictation';
     byId('list-view').hidden = true; byId('quiz-view').hidden = true; view.hidden = false;
     byId('show-list').setAttribute('aria-pressed', 'false'); byId('show-quiz').setAttribute('aria-pressed', 'false');

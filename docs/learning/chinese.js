@@ -132,11 +132,17 @@
     updateAvailability();
     if (quiz && quiz.active) settingsNote.textContent = '設定を変更しました。進行中のテストは開始時の設定で続き、再開始すると新しい設定が適用されます。';
   }
-  function setMode(test) {
+  const adaptiveView = document.getElementById('adaptive-study');
+  const adaptiveButton = document.getElementById('show-adaptive');
+  const legacyControls = document.getElementById('legacy-controls');
+  function setMode(test, adaptive = false) {
     window.dispatchEvent(new Event('chinese-practice-close'));
-    listView.hidden = test;
-    quizView.hidden = !test;
-    showList.setAttribute('aria-pressed', String(!test));
+    adaptiveView.hidden = !adaptive;
+    legacyControls.hidden = adaptive;
+    adaptiveButton.setAttribute('aria-pressed', String(adaptive));
+    listView.hidden = test || adaptive;
+    quizView.hidden = !test || adaptive;
+    showList.setAttribute('aria-pressed', String(!test && !adaptive));
     showQuiz.setAttribute('aria-pressed', String(test));
     if (test) updateAvailability();
   }
@@ -149,6 +155,7 @@
   }
   function lockModeSwitch(locked) {
     showList.disabled = locked;
+    adaptiveButton.disabled = locked;
     document.getElementById('show-dictation').disabled = locked;
     document.getElementById('show-shadowing').disabled = locked;
   }
@@ -216,6 +223,9 @@
         quiz.answered = true;
         const correct = choice === row[answerIndex].trim();
         if (correct) quiz.correct++; else quiz.wrong.push(row);
+        if (quiz.dir === 'zh-ja' && window.chineseAdaptive) {
+          window.chineseAdaptive.recordLegacy({id: `quiz-${Date.now()}-${Math.random().toString(36).slice(2)}`, itemId: `vocab-${row[0]}`, questionId: `vocab-${row[0]}-meaning`, at: Date.now(), correct, response: choice});
+        }
         options.querySelectorAll('button').forEach(item => { item.disabled = true; });
         progress.textContent = `第 ${quiz.index + 1} / ${quiz.questions.length} 問 · 正解 ${quiz.correct} 問`;
         feedback.append(element('strong', '', correct ? '正解！' : '不正解'));
@@ -241,6 +251,8 @@
     quizContent.replaceChildren(panel);
     promptTitle.focus();
   }
+  adaptiveButton.addEventListener('click', () => setMode(false, true));
+  window.addEventListener('chinese-practice-open', () => { adaptiveView.hidden = true; legacyControls.hidden = false; adaptiveButton.setAttribute('aria-pressed', 'false'); });
   showList.addEventListener('click', () => setMode(false));
   showQuiz.addEventListener('click', () => setMode(true));
   startButton.addEventListener('click', () => begin(filtered.map(item => item.row), direction.value, Number(countSelect.value)));
