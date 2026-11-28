@@ -144,3 +144,81 @@ test('scope and storage failure preserve evidence without polluting current anal
   assert.equal(E.build(scoped, st.events(), at).states.size, 0);
   assert.equal(st.events().length, 1);
 });
+
+test('FSRS power-law retrievability has heavier tail than exponential and scales with spacing', () => {
+  const events = [attempt('a', 0, {confidence: 3, seconds: 10}), attempt('b', 3 * E.DAY, {questionId: 'reading', confidence: 2})];
+  const state = E.build(model, events, at + 3 * E.DAY).states.get('word');
+  const atThreeS = E.probability(state, state.memoryAt + 3 * state.stability * E.DAY);
+  assert.ok(atThreeS > Math.pow(0.85, 3));
+  assert.ok(Math.abs(E.probability(state, state.due) - 0.85) < 1e-9);
+});
+
+test('planSession dynamically adapts phase ratios to due count and learning goal', () => {
+  const empty = E.build(model, [], at);
+  const transferPlan = E.planSession(model, empty, {minutes: 60, goal: 'transfer'}, at);
+  const recallPlan = E.planSession(model, empty, {minutes: 60, goal: 'recall'}, at);
+  const byId = plan => Object.fromEntries(plan.map(p => [p.id, p.seconds]));
+  assert.ok(byId(transferPlan).elaboration > byId(recallPlan).elaboration);
+  assert.ok(byId(recallPlan).retrieval > byId(transferPlan).retrieval);
+});
+
+test('fadingLevel and confusable interleaving adapt to learner mastery', () => {
+  const a = {id: 'a', topic: 'g', kind: 'skill', group: 'g', confusables: ['b'], questions: [
+    {id: 'a-q', axis: 'recall', type: 'short', answer: 'a'}
+  ]};
+  const b = {id: 'b', topic: 'g', kind: 'skill', group: 'g', confusables: ['a'], questions: [
+    {id: 'b-q', axis: 'recall', type: 'short', answer: 'b'}
+  ]};
+  const c = {id: 'c', topic: 'g', kind: 'skill', group: 'g', questions: [
+    {id: 'c-q', axis: 'recall', type: 'short', answer: 'c'}
+  ]};
+  const m = E.compile({id: 'interleave', items: [a, b, c]});
+  assert.equal(E.fadingLevel(a, undefined), 'worked');
+  const events = [
+    {id: 'e1', itemId: 'a', questionId: 'a-q', at, correct: true, sessionId: 's1'},
+    {id: 'e2', itemId: 'b', questionId: 'b-q', at, correct: true, sessionId: 's1'},
+    {id: 'e3', itemId: 'c', questionId: 'c-q', at, correct: true, sessionId: 's1'}
+  ];
+  const analysis = E.build(m, events, at + 5 * E.DAY);
+  assert.equal(E.fadingLevel(a, analysis.states.get('a')), 'faded');
+  const active = session();
+  active.steps.push({id: 's0', itemId: 'a', questionId: 'a-q', reasons: []});
+  const next = E.nextStep(m, analysis, active, at + 5 * E.DAY);
+  assert.equal(next.itemId, 'b');
+  assert.ok(next.reasons.includes('類似概念を交互に識別'));
+});
+
+test('calibration and misconceptions summarize metacognitive accuracy', () => {
+  const events = [
+    attempt('e1', 0, {correct: false, confidence: 3, cause: E.CAUSES[2]}),
+    attempt('e2', 2 * E.DAY, {correct: true, confidence: 1, questionId: 'reading'})
+  ];
+  const analysis = E.build(model, events, at + 2 * E.DAY);
+  const stats = E.summary(model, analysis, at + 2 * E.DAY);
+  assert.equal(stats.misconceptions.length, 1);
+  assert.equal(stats.misconceptions[0].cause, E.CAUSES[2]);
+  assert.equal(stats.calibration.overconfident, 1);
+  assert.equal(stats.calibration.underconfident, 1);
+  assert.ok(stats.calibration.brier > 0);
+});
+
+test('readiness evaluates four evidence-based criteria and ranks priority items', () => {
+  const empty = E.build(model, [], at);
+  const r0 = E.readiness(model, empty, at);
+  assert.equal(r0.checks.length, 4);
+  assert.equal(r0.metCount, 0);
+  assert.ok(r0.priorities.length > 0);
+});
+
+test('statistics calculation drills generate valid parameterized problems across all 12 archetypes', () => {
+  const Drills = require('../learning/statistics-drills.js');
+  assert.equal(Drills.GENERATORS.length, 12);
+  const generated = Drills.generate(12, 20261128);
+  assert.equal(generated.length, 12);
+  for (const item of generated) {
+    assert.ok(item.prompt.length > 10);
+    assert.ok(Number.isFinite(item.answer));
+    assert.ok(Number.isFinite(item.tolerance) && item.tolerance >= 0);
+    assert.ok(item.explanation.length > 5);
+  }
+});

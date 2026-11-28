@@ -102,7 +102,11 @@ test('Chinese opens adaptively, resumes a typed answer, saves self-grading, reta
     assert.match(study.textContent, /再学習が必要/);
     byText(study, '学習分析').click();
     assert.match(study.textContent, /初見への応用/);
+    assert.ok(study.querySelector('.as-badge.as-observed'));
+    assert.ok(study.querySelector('.as-badge.as-estimated'));
+    assert.match(study.textContent, /優先修正が必要な誤概念/);
     byText(study, '学習ホームへ').click();
+    assert.ok(study.querySelector('.as-plan'));
     byText(study, '知識マップ').click();
     change(second.window, study.querySelector('input[type=search]'), '地铁');
     assert.match(study.querySelector('.as-map').textContent, /dìtiě/);
@@ -161,6 +165,11 @@ test('statistics imports dated legacy history once and keeps original notebook r
     await returned;
     assert.equal(document.contains(study), true);
     assert.ok(study.querySelector('.as-feedback'));
+    byText(study, 'セッションを終了').click();
+    byText(study, '学習ホームへ').click();
+    byText(study, '知識マップ').click();
+    assert.ok(study.querySelector('svg.as-graph'));
+    assert.ok(study.querySelectorAll('.as-graph-node').length >= 10);
     assert.deepEqual(site.errors, []);
   } finally {
     site.dom.window.close();
